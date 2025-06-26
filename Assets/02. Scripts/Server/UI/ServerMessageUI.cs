@@ -1,9 +1,12 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ServerMessageUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _messageText;
+    [SerializeField] private GameObject _messageTextPrefab;
+    [SerializeField] private Transform _messageContainer;
+    [SerializeField] private ScrollRect _chatScrollRect;
     private void Awake()
     {
         PhotonServerManager.ServerEvent += OnServerEvent;
@@ -15,7 +18,12 @@ public class ServerMessageUI : MonoBehaviour
 
     private void OnServerEvent(string message)
     {
-        _messageText.text = message;
+        var serverMessageText = Instantiate(_messageTextPrefab, _messageContainer);
+        serverMessageText.GetComponent<ChattingMessage>().Text = message;
     }
-
+    public void ScrollToBottom()
+    {
+        Canvas.ForceUpdateCanvases();
+        _chatScrollRect.verticalNormalizedPosition = 0f;
+    }
 }

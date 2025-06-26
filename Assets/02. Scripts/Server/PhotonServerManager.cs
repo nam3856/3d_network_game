@@ -34,16 +34,14 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
     public override void OnConnected()
     {
         base.OnConnected();
-        ServerEvent?.Invoke($@"{PhotonNetwork.CloudRegion} 지역에 접속했습니다.
-마스터 서버에 접속하는 중...");
+        ServerEvent?.Invoke($"마스터 서버에 접속하는 중...");
     }
 
     // 마스터 서버에 접속한 후 호출되는 콜백 함수
     public override void OnConnectedToMaster()
     {
         base.OnConnectedToMaster();
-        ServerEvent?.Invoke($@"{PhotonNetwork.NickName} 님 어서오세요!
-로비에 접속 중입니다...");
+        ServerEvent?.Invoke($"로비에 접속 중입니다...");
         Debug.Log("마스터 서버에 접속했습니다.");
         Debug.Log("현재 플레이어 닉네임: " + PhotonNetwork.NickName);
         // 방 만들기
@@ -54,8 +52,7 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("로비 접속 완료!");
-        ServerEvent?.Invoke($@"{PhotonNetwork.NickName} 님 어서오세요!
-방 입장을 시도중입니다...");
+        ServerEvent?.Invoke($"{PhotonNetwork.NickName} 님 어서오세요!");
         Debug.Log(PhotonNetwork.InLobby);
 
         PhotonNetwork.JoinRandomRoom();
@@ -70,8 +67,7 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
 
         if (returnCode == 32760) // 룸이 없을 경우
         {
-            ServerEvent?.Invoke($@"{PhotonNetwork.NickName} 님 어서오세요!
-방 생성을 시도중입니다...");
+            ServerEvent?.Invoke($"방 생성을 시도중입니다...");
             CreateRoom();
         }
         else if(returnCode == 32758) // 최대 접속자 수 초과
@@ -108,8 +104,6 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
     // 룸 생성이 완료된 후 호출되는 콜백 함수
     public override void OnCreatedRoom()
     {
-        ServerEvent?.Invoke($@"{PhotonNetwork.NickName} 님 어서오세요!
-방 생성을 완료했습니다.");
         Debug.Log("Created Room");
         // 생성된 룸 이름 확인
         Debug.Log($"Room Name = {PhotonNetwork.CurrentRoom.Name}");
@@ -119,8 +113,7 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
     // 룸에 입장한 후 호출되는 콜백 함수
     public override void OnJoinedRoom()
     {
-        ServerEvent?.Invoke($@"{PhotonNetwork.NickName} 님 어서오세요!
-'{PhotonNetwork.CurrentRoom.Name}' 방에 입장했습니다.");
+        ServerEvent?.Invoke($@"'{PhotonNetwork.CurrentRoom.Name}' 방에 입장했습니다.");
         Debug.Log("룸 입장 완료!");
         Debug.Log($"PhotonNetwork.InRoom = {PhotonNetwork.InRoom}");
         Debug.Log($"Player Count = {PhotonNetwork.CurrentRoom.PlayerCount}");
