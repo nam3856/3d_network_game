@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -15,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     private CharacterController _controller;
     private InputSystem_Actions _inputActions;
+    private CinemachineInputAxisController _cinemachineInputAxisController;
 
     private Vector2 _moveInput;
     private Vector3 _velocity;
@@ -30,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         _inputActions.Player.Enable();
-
+        _moveInput = Vector2.zero;
         _inputActions.Player.Move.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
         _inputActions.Player.Move.canceled += ctx => _moveInput = Vector2.zero;
 
@@ -56,8 +58,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
-        Vector3 move = (CameraTransform.forward * _moveInput.y + CameraTransform.right * _moveInput.x);
-        move.y = 0f; // 지면에 고정
+        Vector3 camForward = Vector3.ProjectOnPlane(CameraTransform.forward, Vector3.up).normalized;
+        Vector3 camRight = Vector3.ProjectOnPlane(CameraTransform.right, Vector3.up).normalized;
+
+        Vector3 move = camForward * _moveInput.y + camRight * _moveInput.x;
 
         float speed = _isSprinting ? SprintSpeed : WalkSpeed;
         _controller.Move(move.normalized * speed * Time.deltaTime);

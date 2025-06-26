@@ -1,0 +1,77 @@
+﻿using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class PlayerRotateAbility : MonoBehaviour
+{
+    [Header("References")]
+    public Transform CameraRoot;
+
+    [Header("Rotation Settings")]
+    public float MouseRotationSpeed = 100f;
+    public float GamepadRotationSpeed = 500f;
+
+    private InputSystem_Actions _inputActions;
+    private float _mouseX;
+    private float _mouseY;
+    private float _currentCameraRotationX = 0f;
+
+    private float _currentRotationSpeed;
+
+    private void Awake()
+    {
+        _inputActions = new InputSystem_Actions();
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void OnEnable()
+    {
+        _inputActions.Player.Enable();
+        _inputActions.Player.Look.performed += OnLookPerformed;
+        _inputActions.Player.Look.canceled += OnLookCanceled;
+    }
+
+    private void OnDisable()
+    {
+        _inputActions.Player.Look.performed -= OnLookPerformed;
+        _inputActions.Player.Disable();
+    }
+
+    private void OnLookPerformed(InputAction.CallbackContext context)
+    {
+        Vector2 lookInput = context.ReadValue<Vector2>();
+        _mouseX = lookInput.x;
+        _mouseY = lookInput.y;
+
+        if (context.control.device is Mouse)
+        {
+            _currentRotationSpeed = MouseRotationSpeed;
+        }
+        else if (context.control.device is Gamepad)
+        {
+            _currentRotationSpeed = GamepadRotationSpeed;
+        }
+        else
+        {
+            _currentRotationSpeed = MouseRotationSpeed;
+        }
+    }
+
+    private void OnLookCanceled(InputAction.CallbackContext context)
+    {
+        _mouseX = 0f;
+        _mouseY = 0f;
+    }
+
+    private void Update()
+    {
+        float rotationAmountX = _mouseX * _currentRotationSpeed * Time.deltaTime;
+        float rotationAmountY = _mouseY * _currentRotationSpeed * Time.deltaTime;
+
+        transform.Rotate(Vector3.up, rotationAmountX);
+
+        _currentCameraRotationX -= rotationAmountY;
+        _currentCameraRotationX = Mathf.Clamp(_currentCameraRotationX, -90f, 90f);
+
+        CameraRoot.localEulerAngles = new Vector3(_currentCameraRotationX, 0f, 0f);
+    }
+}
