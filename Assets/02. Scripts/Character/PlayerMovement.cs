@@ -83,12 +83,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private float _currentAnimSpeed = 0f;
+    [SerializeField] private float speedSmoothTime = 10f;
+
     private void UpdateAnimator()
     {
-        Vector3 flatVelocity = new Vector3(_moveInput.x, 0f, _moveInput.y);
-        float speed = flatVelocity.magnitude * (_isSprinting ? SprintSpeed : WalkSpeed);
+        Vector3 flatInput = new Vector3(_moveInput.x, 0f, _moveInput.y);
+        float targetSpeed = flatInput.magnitude * (_isSprinting ? SprintSpeed : WalkSpeed);
 
-        Animator?.SetFloat("Speed", speed);
+        _currentAnimSpeed = Mathf.Lerp(_currentAnimSpeed, targetSpeed, Time.deltaTime * speedSmoothTime);
+
+        Animator?.SetFloat("Speed", _currentAnimSpeed);
         Animator?.SetBool("IsGrounded", _isGrounded);
     }
 

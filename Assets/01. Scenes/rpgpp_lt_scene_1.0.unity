@@ -3725,6 +3725,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3058560441782647270, guid: cc91c8ba8b9a34f4d99e70d721f60b64, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767091442817321933, guid: cc91c8ba8b9a34f4d99e70d721f60b64, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7019920669011962644, guid: cc91c8ba8b9a34f4d99e70d721f60b64, type: 3}
       propertyPath: m_LocalPosition.x
       value: 68.59
@@ -11101,8 +11109,9 @@ MonoBehaviour:
   Animator: {fileID: 754897397}
   WalkSpeed: 5
   SprintSpeed: 10
-  JumpHeight: 2
+  JumpHeight: 1
   Gravity: -9.81
+  speedSmoothTime: 10
 --- !u!1001 &757600569
 PrefabInstance:
   m_ObjectHideFlags: 0
