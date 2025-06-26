@@ -870,13 +870,14 @@ GameObject:
   - component: {fileID: 2616720279427295732}
   - component: {fileID: 6911855563366428363}
   - component: {fileID: 1017012506481341378}
+  - component: {fileID: 4962036341910857955}
   m_Layer: 0
-  m_Name: Player
-  m_TagString: Untagged
+  m_Name: PlayerPrefab
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2871767253189979511
 Transform:
   m_ObjectHideFlags: 0
@@ -965,7 +966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b099cf446a90f9643955087f086973a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraTransform: {fileID: 0}
+  CameraTransform: {fileID: 7955461720124732617}
   Animator: {fileID: 6423602277016048720}
   WalkSpeed: 5
   SprintSpeed: 10
@@ -997,6 +998,28 @@ CharacterController:
   m_SkinWidth: 0.01
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.75, z: 0}
+--- !u!114 &4962036341910857955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213406538920345286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2233060513624880831
 GameObject:
   m_ObjectHideFlags: 0

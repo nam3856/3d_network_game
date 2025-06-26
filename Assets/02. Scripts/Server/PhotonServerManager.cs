@@ -1,8 +1,10 @@
-using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
-using System.Collections.Generic;
-using System;
+using UnityEngine;
+using UnityEngine.UI;
 public class PhotonServerManager : MonoBehaviourPunCallbacks
 {
     public static event Action<string> ServerEvent;
@@ -12,13 +14,27 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
 
     TypedLobby _lobbyA = new TypedLobby("A", LobbyType.Default);
     TypedLobby _lobbyB = new TypedLobby("B", LobbyType.Default);
+    public static PhotonServerManager Instance;
+    public Button startGameButton;
 
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private string _nickName = "Player";
     private void Start()
     {
         PhotonNetwork.GameVersion = _version;
-        PhotonNetwork.NickName = _nickName;
+        PhotonNetwork.NickName = _nickName + UnityEngine.Random.Range(0, 1000);
 
         // 방장이 로드한 씬 게임에 참여한 다른 사용자들이 똑같이 로드할 수 있도록 동기화 해주는 옵션
         // 방장(마스터 클라이언트): 방을 만든 소유자. (방에는 하나의 마스터 클라이언트만 존재)
@@ -124,5 +140,62 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
         {
             Debug.Log($"{player.Value.NickName} : {player.Value.ActorNumber}");
         }
+
+        if (PhotonNetwork.IsMasterClient)
+            startGameButton?.gameObject.SetActive(true);
+        else
+            startGameButton?.gameObject.SetActive(false);
+    }
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Debug.Log($"{newPlayer.NickName} 님이 방에 입장했습니다.");
+        ServerEvent?.Invoke($"{newPlayer.NickName} 님이 입장했습니다.");
+    }
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        Debug.Log($"{otherPlayer.NickName} 님이 퇴장했습니다.");
+        ServerEvent?.Invoke($"{otherPlayer.NickName} 님이 퇴장했습니다.");
+    }
+    [PunRPC]
+    private void ShowCountdownMessage(int secondsLeft)
+    {
+        ServerEvent?.Invoke($"{secondsLeft}초 후 게임이 시작됩니다...");
+    }
+
+    public void TryStartGame()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            ServerEvent?.Invoke("방장만 게임을 시작할 수 있습니다.");
+            return;
+        }
+
+        startGameButton.interactable = false; // 버튼 비활성화
+        StartCoroutine(StartGameCountdown());
+    }
+
+    private IEnumerator StartGameCountdown()
+    {
+        int countdown = 5;
+
+        while (countdown > 0)
+        {
+            // 모든 클라이언트에게 메시지 표시
+            photonView.RPC(nameof(ShowCountdownMessage), RpcTarget.All, countdown);
+            yield return new WaitForSeconds(1f);
+            countdown--;
+        }
+
+        // 씬 전환
+        PhotonNetwork.LoadLevel(1); // 자동으로 모든 클라이언트 이동
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        ServerEvent?.Invoke($"방장이 떠나 {newMasterClient.NickName} 님이 방장이 되었습니다.");
+        if (PhotonNetwork.IsMasterClient)
+            startGameButton.gameObject.SetActive(true);
+        else
+            startGameButton.gameObject.SetActive(false);
     }
 }

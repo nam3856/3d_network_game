@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +19,7 @@ public class ServerMessageUI : MonoBehaviour
     {
         var serverMessageText = Instantiate(_messageTextPrefab, _messageContainer);
         serverMessageText.GetComponent<ChattingMessage>().Text = message;
+        ScrollToBottom();
     }
     public void ScrollToBottom()
     {
