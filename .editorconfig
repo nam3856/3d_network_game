@@ -1,0 +1,17 @@
+indent_style = space
+indent_size = 4
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.cs]
+dotnet_sort_system_directives_first = true
+csharp_style_var_for_built_in_types = true       # Unity 코드에선 var 자주 사용
+csharp_style_var_when_type_is_apparent = true
+csharp_style_var_elsewhere = true
+dotnet_style_prefer_auto_properties = false      # Unity에선 필드가 중요함
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_between_query_expression_clauses = true
