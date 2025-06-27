@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/01. Scenes/SampleScene.unity
+    path: Assets/01. Scenes/LobbyScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/01. Scenes/DemoNight.unity
+    path: Assets/01. Scenes/PVPScene.unity
     guid: a098ae9106bc995448a4aba7dfe6a4db
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: d6b60ef1319c39640aab4b898ebcb1a6, type: 2}

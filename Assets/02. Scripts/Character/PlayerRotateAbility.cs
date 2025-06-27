@@ -8,6 +8,7 @@ public class PlayerRotateAbility : PlayerAbility
     [Header("References")]
     public Transform CameraRoot;
     public CinemachineCamera VCamera;
+    public Camera MinimapCamera;
     [Header("Rotation Settings")]
     public float MouseRotationSpeed = 100f;
     public float GamepadRotationSpeed = 500f;
@@ -39,6 +40,7 @@ public class PlayerRotateAbility : PlayerAbility
         else
         {
             VCamera.gameObject.SetActive(false);
+            MinimapCamera.gameObject.SetActive(false);
             _inputActions.Player.Disable();
         }
     }

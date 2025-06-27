@@ -9,10 +9,10 @@ public class PlayerMovement : PlayerAbility
     public Animator Animator;
 
     [Header("Movement Settings")]
-    public float WalkSpeed = 5f;
-    public float SprintSpeed = 10f;
-    public float JumpHeight = 2f;
-    public float Gravity = -9.81f;
+    private float WalkSpeed => _owner.PlayerStat.WalkSpeed;
+    private float SprintSpeed => _owner.PlayerStat.SprintSpeed;
+    private float JumpHeight => _owner.PlayerStat.JumpHeight;
+    private float Gravity => _owner.PlayerStat.Gravity;
 
     private CharacterController _controller;
     private InputSystem_Actions _inputActions;
@@ -21,6 +21,7 @@ public class PlayerMovement : PlayerAbility
     private Vector3 _velocity;
     private bool _isSprinting;
     private bool _isGrounded;
+    public bool IsGrounded => _isGrounded;
 
     protected override void Awake()
     {
@@ -76,10 +77,25 @@ public class PlayerMovement : PlayerAbility
 
         Vector3 move = camForward * _moveInput.y + camRight * _moveInput.x;
 
-        float speed = _isSprinting ? SprintSpeed : WalkSpeed;
+        float speed = GetCurrentSpeed();
         _controller.Move(move.normalized * speed * Time.deltaTime);
     }
-
+    private float GetCurrentSpeed()
+    {
+        if (_isSprinting)
+        {
+            var stamina = _owner.GetAbility<PlayerStamina>();
+            if (stamina != null && stamina.TryConsume(_owner.PlayerStat.RunStaminaPerSecond * Time.deltaTime))
+            {
+                return SprintSpeed;
+            }
+            else
+            {
+                _isSprinting = false;
+            }
+        }
+        return WalkSpeed;
+    }
     private void ApplyGravity()
     {
         if (_isGrounded && _velocity.y < 0)
@@ -95,8 +111,13 @@ public class PlayerMovement : PlayerAbility
     {
         if (_isGrounded)
         {
-            _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-            Animator?.SetTrigger("IsJumping");
+            var stamina = _owner.GetAbility<PlayerStamina>();
+            if (stamina.TryConsume(_owner.PlayerStat.JumpStamina))
+            {
+                _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                Animator?.SetTrigger("IsJumping");
+            }
+
         }
     }
 

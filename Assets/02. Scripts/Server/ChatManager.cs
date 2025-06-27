@@ -15,10 +15,10 @@ public class ChatManager : MonoBehaviourPun
 
     private void Start()
     {
-        _chatInputField.onSubmit.AddListener((text) =>
-        {
-            SendChat();
-        });
+        //_chatInputField.onSubmit.AddListener((text) =>
+        //{
+        //    SendChat();
+        //});
         _chatButton.onClick.AddListener(SendChat);
     }
 
@@ -37,10 +37,9 @@ public class ChatManager : MonoBehaviourPun
         yield return null;
         yield return null;
 
-        _chatInputField.selectionFocusPosition = _chatInputField.text.Length + 2;
 
         _chatInputField.DeactivateInputField();
-        string text = _chatInputField.text.Trim();
+        string text = _chatInputField.text;
         Debug.Log(text);
         if (string.IsNullOrEmpty(text))
         {
