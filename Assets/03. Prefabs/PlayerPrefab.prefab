@@ -1300,6 +1300,7 @@ MonoBehaviour:
   - {fileID: 6590137368620204384}
   - {fileID: 6072476757821920899}
   StaminaBarImage: {fileID: 277804655565310397}
+  HealthBarImage: {fileID: 1965024705746659543}
 --- !u!114 &-5940395815401100953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1325,6 +1326,8 @@ MonoBehaviour:
     JumpStamina: 10
     StaminaRecoverPerSecond: 20
     StaminaDelay: 2
+    MaxHealth: 100
+    HealthRecoverPerSecond: 3
     MouseRotationSpeed: 10
     GamepadRotationSpeed: 500
 --- !u!114 &5210533297045914438

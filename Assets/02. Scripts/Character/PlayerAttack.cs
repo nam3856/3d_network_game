@@ -67,12 +67,21 @@ public class PlayerAttack : PlayerAbility
     private void DoAttack()
     {
         _lastAttackTime = Time.time;
+        _photonView.RPC(nameof(RPC_DoAttack), RpcTarget.All);
+    }
+    [PunRPC]
+    private void RPC_DoAttack()
+    {
         int rand = Random.Range(1, 4);
         _playerAnimator.SetTrigger($"Attack{rand}");
-        PerformAttack();
-    }
-    private void PerformAttack()
-    {
-        // 실질적 공격
+        Vector3 center = transform.position + transform.forward * _owner.PlayerStat.AttackRange * 0.5f;
+        Collider[] hits = Physics.OverlapSphere(center, _owner.PlayerStat.AttackRange * 0.5f,EnemyLayer);
+        foreach (var hit in hits)
+        {
+            if (hit.gameObject != gameObject && hit.TryGetComponent(out PlayerHealth health))
+            {
+                health.TakeDamage(_owner.PlayerStat.AttackDamage);
+            }
+        }
     }
 }

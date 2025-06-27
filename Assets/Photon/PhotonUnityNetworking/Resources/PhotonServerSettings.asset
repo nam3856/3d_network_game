@@ -42,6 +42,8 @@ MonoBehaviour:
   - ShowCountdownMessage
   - ReceiveChatMessage
   - RPC_UpdateStaminaUI
+  - RPC_DoAttack
+  - RPC_UpdateHealthUI
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

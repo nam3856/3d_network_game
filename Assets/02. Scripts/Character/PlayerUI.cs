@@ -8,6 +8,7 @@ public class PlayerUI : PlayerAbility
     public TextMeshProUGUI MinimapNicknameTextUI;
     public Image[] MinimapIcons;
     public Image StaminaBarImage;
+    public Image HealthBarImage;
 
     private void Start()
     {
@@ -38,7 +39,26 @@ public class PlayerUI : PlayerAbility
             StaminaBarImage.fillAmount = Mathf.Clamp01(current / max);
         }
 
-        _photonView.RPC("RPC_UpdateStaminaUI", RpcTarget.All, current, max);
+        _photonView.RPC(nameof(RPC_UpdateStaminaUI), RpcTarget.All, current, max);
+    }
+
+    public void UpdateHealthUI(float current, float max)
+    {
+        if (HealthBarImage != null)
+        {
+            HealthBarImage.fillAmount = Mathf.Clamp01(current / max);
+        }
+
+        _photonView.RPC(nameof(RPC_UpdateHealthUI), RpcTarget.All, current, max);
+    }
+
+    [PunRPC]
+    public void RPC_UpdateHealthUI(float current, float max)
+    {
+        if (HealthBarImage != null)
+        {
+            HealthBarImage.fillAmount = Mathf.Clamp01(current / max);
+        }
     }
 
     [PunRPC]
