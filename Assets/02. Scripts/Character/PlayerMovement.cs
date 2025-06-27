@@ -1,8 +1,8 @@
+using Photon.Pun;
 using Unity.Cinemachine;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : PlayerAbility
 {
     [Header("References")]
     public Transform CameraTransform;
@@ -16,44 +16,57 @@ public class PlayerMovement : MonoBehaviour
 
     private CharacterController _controller;
     private InputSystem_Actions _inputActions;
-    private CinemachineInputAxisController _cinemachineInputAxisController;
 
     private Vector2 _moveInput;
     private Vector3 _velocity;
     private bool _isSprinting;
     private bool _isGrounded;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _controller = GetComponent<CharacterController>();
         _inputActions = new InputSystem_Actions();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
-        _inputActions.Player.Enable();
-        _moveInput = Vector2.zero;
-        _inputActions.Player.Move.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
-        _inputActions.Player.Move.canceled += ctx => _moveInput = Vector2.zero;
+        base.OnEnable();
+        if (_photonView.IsMine)
+        {
+            _inputActions.Player.Enable();
+            _moveInput = Vector2.zero;
+            _inputActions.Player.Move.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
+            _inputActions.Player.Move.canceled += ctx => _moveInput = Vector2.zero;
 
 
-        _inputActions.Player.Jump.performed += ctx => Jump();
-        _inputActions.Player.Sprint.performed += ctx => _isSprinting = true;
-        _inputActions.Player.Sprint.canceled += ctx => _isSprinting = false;
+            _inputActions.Player.Jump.performed += ctx => Jump();
+            _inputActions.Player.Sprint.performed += ctx => _isSprinting = true;
+            _inputActions.Player.Sprint.canceled += ctx => _isSprinting = false;
+        }
+        else
+        {
+            _inputActions.Player.Disable();
+        }
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         _inputActions.Player.Disable();
     }
 
-    private void Update()
+    protected override void Update()
     {
-        _isGrounded = _controller.isGrounded;
+        base.Update();
+        if (_photonView.IsMine)
+        {
+            _isGrounded = _controller.isGrounded;
 
-        MovePlayer();
-        ApplyGravity();
-        UpdateAnimator();
+            MovePlayer();
+            ApplyGravity();
+            UpdateAnimator();
+        }
     }
 
     private void MovePlayer()

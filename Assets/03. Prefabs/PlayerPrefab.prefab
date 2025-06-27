@@ -866,11 +866,14 @@ GameObject:
   m_Component:
   - component: {fileID: 2871767253189979511}
   - component: {fileID: 6423602277016048720}
+  - component: {fileID: -5940395815401100953}
   - component: {fileID: 5210533297045914438}
   - component: {fileID: 2616720279427295732}
   - component: {fileID: 6911855563366428363}
   - component: {fileID: 1017012506481341378}
   - component: {fileID: 4962036341910857955}
+  - component: {fileID: 327025001346078361}
+  - component: {fileID: -1166956078280168870}
   m_Layer: 0
   m_Name: PlayerPrefab
   m_TagString: Player
@@ -921,6 +924,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-5940395815401100953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213406538920345286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3d5864579afc704bbbb2debf7653c73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerStat:
+    MoveSpeed: 5
+    JumpHeight: 2
+    Gravity: -9.81
+    AttackRange: 2
+    AttackDamage: 10
+    AttackCooldown: 0.6
+    MouseRotationSpeed: 10
+    GamepadRotationSpeed: 500
 --- !u!114 &5210533297045914438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -933,9 +957,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4644998f3ef736b40a67dfc57671bcc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackRange: 2
-  AttackDamage: 10
-  AttackCooldown: 0.6
   EnemyLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -952,7 +973,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraRoot: {fileID: 9018604359100329118}
-  MouseRotationSpeed: 10
+  VCamera: {fileID: 2996004189610449816}
+  MouseRotationSpeed: 20
   GamepadRotationSpeed: 500
 --- !u!114 &6911855563366428363
 MonoBehaviour:
@@ -1016,10 +1038,64 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 327025001346078361}
+  - {fileID: -1166956078280168870}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &327025001346078361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213406538920345286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &-1166956078280168870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213406538920345286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 1
+    SynchronizeType: 1
+    Name: Speed
+  - Type: 9
+    SynchronizeType: 1
+    Name: IsJumping
+  - Type: 4
+    SynchronizeType: 1
+    Name: IsGrounded
+  - Type: 9
+    SynchronizeType: 1
+    Name: Attack1
+  - Type: 9
+    SynchronizeType: 1
+    Name: Attack2
+  - Type: 9
+    SynchronizeType: 1
+    Name: Attack3
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
 --- !u!1 &2233060513624880831
 GameObject:
   m_ObjectHideFlags: 0
@@ -2101,7 +2177,7 @@ GameObject:
   - component: {fileID: 7036060728602804355}
   m_Layer: 0
   m_Name: Third Person Aim Camera
-  m_TagString: Untagged
+  m_TagString: FollowCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2141,7 +2217,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 2871767253189979511}
+    TrackingTarget: {fileID: 9018604359100329118}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:

@@ -1,11 +1,13 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using Unity.Cinemachine;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerRotateAbility : MonoBehaviour
+public class PlayerRotateAbility : PlayerAbility
 {
     [Header("References")]
     public Transform CameraRoot;
-
+    public CinemachineCamera VCamera;
     [Header("Rotation Settings")]
     public float MouseRotationSpeed = 100f;
     public float GamepadRotationSpeed = 500f;
@@ -17,23 +19,38 @@ public class PlayerRotateAbility : MonoBehaviour
 
     private float _currentRotationSpeed;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _inputActions = new InputSystem_Actions();
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
-        _inputActions.Player.Enable();
-        _inputActions.Player.Look.performed += OnLookPerformed;
-        _inputActions.Player.Look.canceled += OnLookCanceled;
+        base.OnEnable();
+        
+        if (_photonView.IsMine)
+        {
+            VCamera.Follow = CameraRoot;
+            _inputActions.Player.Enable();
+            _inputActions.Player.Look.performed += OnLookPerformed;
+            _inputActions.Player.Look.canceled += OnLookCanceled;
+        }
+        else
+        {
+            VCamera.gameObject.SetActive(false);
+            _inputActions.Player.Disable();
+        }
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
-        _inputActions.Player.Look.performed -= OnLookPerformed;
-        _inputActions.Player.Disable();
+        base.OnDisable();
+        if (_photonView.IsMine)
+        {
+            _inputActions.Player.Look.performed -= OnLookPerformed;
+            _inputActions.Player.Disable();
+        }
     }
 
     private void OnLookPerformed(InputAction.CallbackContext context)
@@ -62,7 +79,16 @@ public class PlayerRotateAbility : MonoBehaviour
         _mouseY = 0f;
     }
 
-    private void Update()
+    protected override void Update()
+    {
+        base.Update();
+        if (_photonView.IsMine)
+        {
+            RotatePlayer();
+        }
+    }
+
+    private void RotatePlayer()
     {
         float rotationAmountX = _mouseX * _currentRotationSpeed * Time.deltaTime;
         float rotationAmountY = _mouseY * _currentRotationSpeed * Time.deltaTime;

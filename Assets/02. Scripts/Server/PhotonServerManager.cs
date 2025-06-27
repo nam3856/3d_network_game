@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
+using Player = Photon.Realtime.Player;
 public class PhotonServerManager : MonoBehaviourPunCallbacks
 {
     public static event Action<string> ServerEvent;
@@ -40,6 +41,8 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
         // 방장(마스터 클라이언트): 방을 만든 소유자. (방에는 하나의 마스터 클라이언트만 존재)
         PhotonNetwork.AutomaticallySyncScene = true;
 
+        PhotonNetwork.SendRate = 30;
+        PhotonNetwork.SerializationRate = 30;
 
         // 설정값들을 이용해 서버 접속 시도
         // 정확히는 네임 서버로 접속 시도
@@ -141,10 +144,7 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
             Debug.Log($"{player.Value.NickName} : {player.Value.ActorNumber}");
         }
 
-        if (PhotonNetwork.IsMasterClient)
-            startGameButton?.gameObject.SetActive(true);
-        else
-            startGameButton?.gameObject.SetActive(false);
+        UpdateStartGameButton();
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
@@ -193,6 +193,17 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         ServerEvent?.Invoke($"방장이 떠나 {newMasterClient.NickName} 님이 방장이 되었습니다.");
+
+        // 게임 시작전에만 버튼 업데이트
+        if (startGameButton != null)
+        {
+            UpdateStartGameButton();
+        }
+
+    }
+
+    private void UpdateStartGameButton()
+    {
         if (PhotonNetwork.IsMasterClient)
             startGameButton.gameObject.SetActive(true);
         else
