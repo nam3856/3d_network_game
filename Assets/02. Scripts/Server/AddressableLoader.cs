@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -44,17 +44,9 @@ public class AddressableLoader : MonoBehaviourPunCallbacks
             StartCoroutine(LoadAndSpawnPlayer());
         }
     }
-    public override void OnJoinedRoom()
-    {
-        base.OnJoinedRoom();
-        if (SceneManager.GetActiveScene().buildIndex == 1)
-        {
-            StartCoroutine(LoadAndSpawnPlayer());
-        }
-    }
     private IEnumerator LoadAndSpawnPlayer()
     {
-        // poolÀÌ ·ÎµùÇÏ±â Àü¿¡ Photon.Instantiate¸¦ È£ÃâÇÏ¸é ¾È µÊ ¡æ ±â´Ù·Á¾ß ÇÔ
+        // poolì´ ë¡œë”©í•˜ê¸° ì „ì— Photon.Instantiateë¥¼ í˜¸ì¶œí•˜ë©´ ì•ˆ ë¨ â†’ ê¸°ë‹¤ë ¤ì•¼ í•¨
         while (!(PhotonNetwork.PrefabPool is AddressablesPool pool) || !pool.IsLoaded(prefabAddress))
         {
             yield return null;
