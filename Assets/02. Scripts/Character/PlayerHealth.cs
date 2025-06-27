@@ -20,9 +20,14 @@ public class PlayerHealth : PlayerAbility
         _currentHealth = Mathf.Max(0, _currentHealth);
         _owner.GetAbility<PlayerUI>()?.UpdateHealthUI(_currentHealth, MaxHealth);
 
+        
         if (_currentHealth <= 0)
         {
             Die();
+        }
+        else
+        {
+            _animator.SetTrigger("Hit");
         }
     }
 

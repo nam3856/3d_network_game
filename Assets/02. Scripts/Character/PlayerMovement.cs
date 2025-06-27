@@ -136,8 +136,8 @@ public class PlayerMovement : PlayerAbility
         float targetSpeed = flatInput.magnitude * (_isSprinting ? SprintSpeed : WalkSpeed);
 
         _currentAnimSpeed = Mathf.Lerp(_currentAnimSpeed, targetSpeed, Time.deltaTime * speedSmoothTime);
-
-        Animator?.SetFloat("Speed", _currentAnimSpeed);
+        float dividedAnimSpeed = _currentAnimSpeed / SprintSpeed;
+        Animator?.SetFloat("Speed", dividedAnimSpeed);
         Animator?.SetBool("IsGrounded", _isGrounded);
     }
 
