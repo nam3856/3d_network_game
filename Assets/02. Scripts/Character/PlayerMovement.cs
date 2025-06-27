@@ -13,6 +13,7 @@ public class PlayerMovement : PlayerAbility
     private float SprintSpeed => _owner.PlayerStat.SprintSpeed;
     private float JumpHeight => _owner.PlayerStat.JumpHeight;
     private float Gravity => _owner.PlayerStat.Gravity;
+    private bool IsInWater => transform.position.y < -0.4f;
 
     private CharacterController _controller;
     private InputSystem_Actions _inputActions;
@@ -78,6 +79,8 @@ public class PlayerMovement : PlayerAbility
         Vector3 move = camForward * _moveInput.y + camRight * _moveInput.x;
 
         float speed = GetCurrentSpeed();
+        if (IsInWater)
+            speed *= 0.5f;
         _controller.Move(move.normalized * speed * Time.deltaTime);
     }
     private float GetCurrentSpeed()
@@ -98,20 +101,23 @@ public class PlayerMovement : PlayerAbility
     }
     private void ApplyGravity()
     {
+        float gravityMultiplier = IsInWater ? 0.2f : 1f;
+
         if (_isGrounded && _velocity.y < 0)
         {
             _velocity.y = -2f;
         }
 
-        _velocity.y += Gravity * Time.deltaTime;
+        _velocity.y += Gravity * gravityMultiplier * Time.deltaTime;
         _controller.Move(_velocity * Time.deltaTime);
     }
 
     private void Jump()
     {
-        if (_isGrounded)
+        var stamina = _owner.GetAbility<PlayerStamina>();
+        if (IsInWater || _isGrounded)
         {
-            var stamina = _owner.GetAbility<PlayerStamina>();
+            
             if (stamina.TryConsume(_owner.PlayerStat.JumpStamina))
             {
                 _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
