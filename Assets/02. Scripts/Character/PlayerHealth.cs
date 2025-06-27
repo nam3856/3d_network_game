@@ -4,9 +4,12 @@ public class PlayerHealth : PlayerAbility
 {
     private float _currentHealth;
     private float MaxHealth => _owner.PlayerStat.MaxHealth;
+
+    private Animator _animator;
     private void Start()
     {
         _currentHealth = MaxHealth;
+        _animator = GetComponent<Animator>();
     }
 
     public void TakeDamage(float damage)
@@ -25,6 +28,11 @@ public class PlayerHealth : PlayerAbility
 
     private void Die()
     {
+        _animator.SetTrigger("Die");
+        _owner.GetAbility<PlayerAttack>().enabled = false;
+        _owner.GetAbility<PlayerMovement>().enabled = false;
+        _owner.GetAbility<PlayerRotateAbility>().enabled = false;
+        _owner.GetAbility<PlayerStamina>().enabled = false;
         Debug.Log("플레이어 사망");
     }
 
