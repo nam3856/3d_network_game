@@ -12,6 +12,7 @@ public class ChatManager : MonoBehaviourPun
     [SerializeField] private GameObject _chatMessagePrefab;
     [SerializeField] private Transform _chatContent;
     [SerializeField] private ScrollRect _chatScrollRect;
+    [SerializeField] private ChatUIFader _chatUIFader;
 
     private void Start()
     {
@@ -59,6 +60,8 @@ public class ChatManager : MonoBehaviourPun
         var msgGO = Instantiate(_chatMessagePrefab, _chatContent);
         var chatMsg = msgGO.GetComponent<ChattingMessage>();
         chatMsg.Text = $"<b>{sender}</b>: {message}";
+
+        _chatUIFader?.FadeIn();
         ScrollToBottom();
     }
 

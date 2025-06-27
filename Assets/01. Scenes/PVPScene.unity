@@ -1551,6 +1551,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4848380743310449371, guid: 86e67e88af7cec84488208f4b5966094, type: 3}
+      propertyPath: _chatUIFader
+      value: 
+      objectReference: {fileID: 134698285}
+    - target: {fileID: 5645667986667377289, guid: 86e67e88af7cec84488208f4b5966094, type: 3}
+      propertyPath: _chatUIFader
+      value: 
+      objectReference: {fileID: 134698285}
     - target: {fileID: 6809360035785751638, guid: 86e67e88af7cec84488208f4b5966094, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -1582,13 +1590,51 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 402478222028891546, guid: 86e67e88af7cec84488208f4b5966094, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 134698285}
+    - targetCorrespondingSourceObject: {fileID: 402478222028891546, guid: 86e67e88af7cec84488208f4b5966094, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 134698284}
   m_SourcePrefab: {fileID: 100100000, guid: 86e67e88af7cec84488208f4b5966094, type: 3}
 --- !u!224 &134698282 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 645287497449275571, guid: 86e67e88af7cec84488208f4b5966094, type: 3}
   m_PrefabInstance: {fileID: 134698281}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &134698283 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 402478222028891546, guid: 86e67e88af7cec84488208f4b5966094, type: 3}
+  m_PrefabInstance: {fileID: 134698281}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &134698284
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134698283}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &134698285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134698283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f9cc1c3a311fa54e9baed20158c2376, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 134698284}
+  fadeDuration: 0.5
+  visibleDuration: 5
 --- !u!1001 &140454509
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1959,7 +2005,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.769354, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.6226415, b: 0.18351094, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10686,8 +10732,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
