@@ -13,6 +13,7 @@ public class PlayerUI : PlayerAbility
     private void Start()
     {
         NicknameTextUI.text = _photonView.Owner.NickName;
+        HUDManager.Instance.SetNickname(_photonView.Owner.NickName);
         MinimapNicknameTextUI.text = _photonView.Owner.NickName;
         if (_photonView.IsMine)
         {

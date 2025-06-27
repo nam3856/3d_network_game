@@ -34,6 +34,8 @@ public class PlayerStamina : PlayerAbility
                 if (Mathf.Abs(_currentStamina - _lastStamina) > 3f)
                 {
                     _owner.GetAbility<PlayerUI>()?.UpdateStaminaUI(Current, Max);
+
+                    HUDManager.Instance.UpdateStaminaUI(Current, Max);
                     _lastStamina = _currentStamina;
                 }
             }
@@ -49,6 +51,7 @@ public class PlayerStamina : PlayerAbility
             _currentStamina -= amount;
             _recoverDelayTimer = _owner.PlayerStat.StaminaDelay;
             _owner.GetAbility<PlayerUI>()?.UpdateStaminaUI(Current, Max);
+            HUDManager.Instance.UpdateStaminaUI(Current, Max);
             return true;
         }
         return false;
@@ -61,6 +64,7 @@ public class PlayerStamina : PlayerAbility
             _currentStamina = Mathf.Max(_currentStamina - amount, 0f);
 
             _owner.GetAbility<PlayerUI>()?.UpdateStaminaUI(Current, Max);
+            HUDManager.Instance.UpdateStaminaUI(Current, Max);
         }
     }
 
@@ -71,6 +75,7 @@ public class PlayerStamina : PlayerAbility
             _currentStamina = Mathf.Min(_currentStamina + amount, Max);
 
             _owner.GetAbility<PlayerUI>()?.UpdateStaminaUI(Current, Max);
+            HUDManager.Instance.UpdateStaminaUI(Current, Max);
         }
     }
 }
