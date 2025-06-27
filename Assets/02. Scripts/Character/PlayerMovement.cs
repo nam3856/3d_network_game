@@ -6,7 +6,6 @@ public class PlayerMovement : PlayerAbility
 {
     [Header("References")]
     public Transform CameraTransform;
-    public Animator Animator;
 
     [Header("Movement Settings")]
     private float WalkSpeed => _owner.PlayerStat.WalkSpeed;
@@ -121,7 +120,7 @@ public class PlayerMovement : PlayerAbility
             if (stamina.TryConsume(_owner.PlayerStat.JumpStamina))
             {
                 _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-                Animator?.SetTrigger("IsJumping");
+                _owner.GetAbility<AnimationPlayer>().PlayAnimation(AnimTriggerParam.Jump);
             }
 
         }
@@ -137,8 +136,8 @@ public class PlayerMovement : PlayerAbility
 
         _currentAnimSpeed = Mathf.Lerp(_currentAnimSpeed, targetSpeed, Time.deltaTime * speedSmoothTime);
         float dividedAnimSpeed = _currentAnimSpeed / SprintSpeed;
-        Animator?.SetFloat("Speed", dividedAnimSpeed);
-        Animator?.SetBool("IsGrounded", _isGrounded);
+        _owner.GetAbility<AnimationPlayer>().SetFloat(AnimFloatParam.Speed, dividedAnimSpeed);
+        _owner.GetAbility<AnimationPlayer>().SetBool(AnimBoolParam.IsGrounded, _isGrounded);
     }
 
 }

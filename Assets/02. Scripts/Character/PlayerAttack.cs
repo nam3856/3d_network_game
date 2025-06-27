@@ -8,16 +8,12 @@ public class PlayerAttack : PlayerAbility
     private float _lastAttackTime = 0f;
     public LayerMask EnemyLayer;
 
-    private Animator _playerAnimator;
     private InputSystem_Actions _inputActions;
+
     protected override void Awake()
     {
         base.Awake();
         _inputActions = new InputSystem_Actions();
-        if (_playerAnimator == null)
-        {
-            _playerAnimator = GetComponent<Animator>();
-        }
     }
     protected override void OnEnable()
     {
@@ -41,7 +37,6 @@ public class PlayerAttack : PlayerAbility
             _inputActions.Player.Disable();
         }
     }
-
     private void TryAttack(InputAction.CallbackContext context)
     {
         // 내꺼가 아니면 안돼
@@ -68,12 +63,13 @@ public class PlayerAttack : PlayerAbility
     {
         _lastAttackTime = Time.time;
         _photonView.RPC(nameof(RPC_DoAttack), RpcTarget.All);
+
+        int rand = Random.Range(1, 4);
+        _owner.GetAbility<AnimationPlayer>().PlayAnimation((AnimTriggerParam)rand);
     }
     [PunRPC]
     private void RPC_DoAttack()
     {
-        int rand = Random.Range(1, 4);
-        _playerAnimator.SetTrigger($"Attack{rand}");
         Vector3 center = transform.position + transform.forward * _owner.PlayerStat.AttackRange * 0.5f;
         Collider[] hits = Physics.OverlapSphere(center, _owner.PlayerStat.AttackRange * 0.5f,EnemyLayer);
         foreach (var hit in hits)
@@ -84,4 +80,5 @@ public class PlayerAttack : PlayerAbility
             }
         }
     }
+
 }

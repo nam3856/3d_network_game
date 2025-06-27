@@ -1219,6 +1219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2871767253189979511}
   - component: {fileID: 6423602277016048720}
+  - component: {fileID: 1525512720436350063}
   - component: {fileID: -8188901571083944576}
   - component: {fileID: 7733774292735166489}
   - component: {fileID: -5940395815401100953}
@@ -1283,6 +1284,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1525512720436350063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213406538920345286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5139ef8340e3da4aa72b52ee75e09f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &-8188901571083944576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1388,7 +1401,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraTransform: {fileID: 7955461720124732617}
-  Animator: {fileID: 6423602277016048720}
   speedSmoothTime: 10
 --- !u!114 &8404874554481924313
 MonoBehaviour:
@@ -1500,6 +1512,12 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 1
     Name: Attack3
+  - Type: 9
+    SynchronizeType: 0
+    Name: Die
+  - Type: 9
+    SynchronizeType: 0
+    Name: Hit
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
