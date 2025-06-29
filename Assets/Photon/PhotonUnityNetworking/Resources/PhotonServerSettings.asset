@@ -44,6 +44,9 @@ MonoBehaviour:
   - RPC_UpdateStaminaUI
   - RPC_DoAttack
   - RPC_UpdateHealthUI
+  - RPC_PlayAnimation
+  - RPC_SetBool
+  - RPC_SetFloat
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
