@@ -47,6 +47,8 @@ MonoBehaviour:
   - RPC_PlayAnimation
   - RPC_SetBool
   - RPC_SetFloat
+  - KickPlayer
+  - ReceiveKickMessage
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

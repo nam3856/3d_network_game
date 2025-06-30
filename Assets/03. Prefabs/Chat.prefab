@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 645287497449275571}
   - component: {fileID: 8491003876944433180}
+  - component: {fileID: 3354019590350959416}
   - component: {fileID: 5645667986667377289}
   - component: {fileID: 4848380743310449371}
-  - component: {fileID: 6995852854009484052}
   - component: {fileID: 650347376671524375}
   m_Layer: 5
   m_Name: Chat
@@ -50,6 +50,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 402478222028891546}
   m_CullTransparentMesh: 1
+--- !u!114 &3354019590350959416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402478222028891546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f9cc1c3a311fa54e9baed20158c2376, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 1872952395062005945}
+  fadeDuration: 0.5
+  visibleDuration: 5
 --- !u!114 &5645667986667377289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,6 +82,7 @@ MonoBehaviour:
   _chatMessagePrefab: {fileID: 6591686799516743418, guid: 1451c23d981c4fe4da98471f570239e7, type: 3}
   _chatContent: {fileID: 6809360035785751638}
   _chatScrollRect: {fileID: 8216972569666702668}
+  _chatUIFader: {fileID: 3354019590350959416}
 --- !u!114 &4848380743310449371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,36 +98,7 @@ MonoBehaviour:
   _messageTextPrefab: {fileID: 6591686799516743418, guid: e6517da7572a5954cae712bd32d0c921, type: 3}
   _messageContainer: {fileID: 6809360035785751638}
   _chatScrollRect: {fileID: 8216972569666702668}
---- !u!114 &6995852854009484052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 402478222028891546}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.7254902}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fa489050fd9b47f449068362a7b1b7fb, type: 3}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  _chatUIFader: {fileID: 3354019590350959416}
 --- !u!114 &650347376671524375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,6 +460,7 @@ GameObject:
   - component: {fileID: 3959206737070340345}
   - component: {fileID: 675343210094826592}
   - component: {fileID: 8216972569666702668}
+  - component: {fileID: 1872952395062005945}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -569,6 +557,18 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!225 &1872952395062005945
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7830460857794209317}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8856630265055691424
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,7 +764,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7233051494870565536, guid: b5c9c741a0d4edd4c9948dba78e58d2b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 800
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 7233051494870565536, guid: b5c9c741a0d4edd4c9948dba78e58d2b, type: 3}
       propertyPath: m_SizeDelta.y

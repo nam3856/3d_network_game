@@ -138,7 +138,6 @@ namespace RainbowArt.CleanFlatUI
         float spacing = 20.0f;         
         bool bDelayedUpdate = false;        
         float elapsedTime = 0f;
-        
         Vector3? initAnchoredPosition;        
         Vector3 InitPosition
         {
@@ -449,7 +448,8 @@ namespace RainbowArt.CleanFlatUI
         {
             PlayAnimation(false);
             yield return new WaitForSeconds(disableTime);
-            gameObject.SetActive(false);         
+            gameObject.SetActive(false);
+
         }  
 
         void InitButtons()
@@ -487,6 +487,7 @@ namespace RainbowArt.CleanFlatUI
 
         void OnCloseClick()
         {
+
             StopUpdateTransition();
             HideNotification();    
             onCancel.Invoke();              
