@@ -1,4 +1,5 @@
 using Photon.Pun;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 // 스크립트
@@ -11,6 +12,7 @@ public class MatchSelector : MonoBehaviourPunCallbacks
     [SerializeField] private CanvasGroup _customRoomCanvas;
     [SerializeField] private QuickMatchManager _quickMatchManager;
     [SerializeField] private RoomListManager _roomListManager;
+    [SerializeField] private TMP_InputField _nicknameInput;
 
 
     private void Awake()
@@ -22,7 +24,8 @@ public class MatchSelector : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         base.OnConnectedToMaster();
-
+        _nicknameInput.text = PhotonNetwork.NickName;
+        _nicknameInput.gameObject.SetActive(true);
         _customRoomButton.gameObject.SetActive(true);
         _quickMatchButton.gameObject.SetActive(true);
     }
@@ -30,12 +33,14 @@ public class MatchSelector : MonoBehaviourPunCallbacks
 
     private void DisableButtons()
     {
+        _nicknameInput.gameObject.SetActive(false);
         _customRoomButton.gameObject.SetActive(false);
         _quickMatchButton.gameObject.SetActive(false);
     }
 
     private void QuickMatch()
     {
+        PhotonNetwork.NickName = _nicknameInput.text.Trim();
         DisableButtons();
         _quickMatchCanvas.alpha = 1.0f;
         _quickMatchCanvas.blocksRaycasts = true;
@@ -46,6 +51,8 @@ public class MatchSelector : MonoBehaviourPunCallbacks
 
     private void CustomRoom()
     {
+
+        PhotonNetwork.NickName = _nicknameInput.text.Trim();
         DisableButtons();
         _roomListManager.gameObject.SetActive(true);
 

@@ -36,7 +36,7 @@ public class PlayerStamina : PlayerAbility
             {
                 _currentStamina += _owner.PlayerStat.StaminaRecoverPerSecond * Time.deltaTime;
                 _currentStamina = Mathf.Min(_currentStamina, Max);
-                if (Mathf.Abs(_currentStamina - _lastStamina) > 3f)
+                if (Mathf.Abs(_currentStamina - _lastStamina) > 1f)
                 {
                     _owner.GetAbility<PlayerUI>()?.UpdateStaminaUI(Current, Max);
 

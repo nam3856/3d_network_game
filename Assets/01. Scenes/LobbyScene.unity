@@ -5294,6 +5294,7 @@ MonoBehaviour:
   _customRoomCanvas: {fileID: 2034837086}
   _quickMatchManager: {fileID: 1646117881}
   _roomListManager: {fileID: 1186074495}
+  _nicknameInput: {fileID: 1342024690}
 --- !u!1 &1129514036
 GameObject:
   m_ObjectHideFlags: 0
@@ -5901,6 +5902,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7231887272289732622, guid: f67ff22f16a10254c960b97f4e2d8926, type: 3}
+      propertyPath: m_text
+      value: "\uB2C9\uB124\uC784 \uC785\uB825.."
+      objectReference: {fileID: 0}
+    - target: {fileID: -7231887272289732622, guid: f67ff22f16a10254c960b97f4e2d8926, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: 259f57146a3651e4c99c744a3e09650d, type: 2}
@@ -5919,6 +5924,10 @@ PrefabInstance:
     - target: {fileID: 1373293703190948031, guid: f67ff22f16a10254c960b97f4e2d8926, type: 3}
       propertyPath: m_Name
       value: InputFieldBasic_Rise
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373293703190948031, guid: f67ff22f16a10254c960b97f4e2d8926, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7233051494870565536, guid: f67ff22f16a10254c960b97f4e2d8926, type: 3}
       propertyPath: m_Pivot.x
@@ -6000,6 +6009,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9060803458338612690, guid: f67ff22f16a10254c960b97f4e2d8926, type: 3}
+      propertyPath: m_CharacterLimit
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 9060803458338612690, guid: f67ff22f16a10254c960b97f4e2d8926, type: 3}
+      propertyPath: m_GlobalFontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 259f57146a3651e4c99c744a3e09650d, type: 2}
+    - target: {fileID: 9060803458338612690, guid: f67ff22f16a10254c960b97f4e2d8926, type: 3}
+      propertyPath: m_GlobalPointSize
+      value: 26
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6010,6 +6031,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7233051494870565536, guid: f67ff22f16a10254c960b97f4e2d8926, type: 3}
   m_PrefabInstance: {fileID: 1342024688}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1342024690 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9060803458338612690, guid: f67ff22f16a10254c960b97f4e2d8926, type: 3}
+  m_PrefabInstance: {fileID: 1342024688}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1382207992
 GameObject:
   m_ObjectHideFlags: 0

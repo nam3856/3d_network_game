@@ -50,6 +50,8 @@ MonoBehaviour:
   - KickPlayer
   - ReceiveKickMessage
   - RPC_Respawn
+  - ForceBadStats
+  - ReportMyStats
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

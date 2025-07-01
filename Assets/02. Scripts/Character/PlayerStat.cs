@@ -22,7 +22,7 @@ public class PlayerStat
     public float AttackStamina = 20f;
     public float JumpStamina = 10f;
     public float StaminaRecoverPerSecond = 20f;
-    public float StaminaDelay = 2f;
+    public float StaminaDelay = 0.5f;
 
     [Header("Health")]
     public float MaxHealth = 100f;

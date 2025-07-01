@@ -28,6 +28,36 @@ public class PlayerAttack : PlayerAbility
             _inputActions.Player.Disable();
         }
     }
+
+    private void Start()
+    {
+        if (_photonView.IsMine)
+        {
+            _photonView.RPC("ReportMyStats", RpcTarget.MasterClient,
+                _owner.PlayerStat.MoveSpeed, _owner.PlayerStat.AttackDamage, _owner.PlayerStat.MaxHealth, PhotonNetwork.LocalPlayer.ActorNumber);
+        }
+    }
+
+    [PunRPC]
+    void ReportMyStats(float moveSpeed, int attackDamage, float maxHealth, int actorNumber)
+    {
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        if (moveSpeed > 10f || attackDamage > 10 || maxHealth > 100f)
+        {
+            _photonView.RPC("ForceBadStats", PhotonNetwork.CurrentRoom.GetPlayer(actorNumber));
+        }
+    }
+
+    [PunRPC]
+    void ForceBadStats()
+    {
+        _owner.PlayerStat.MoveSpeed = 0f;
+        _owner.PlayerStat.AttackDamage = 0;
+        _owner.PlayerStat.MaxHealth = 1f;
+        GetComponent<MeshRenderer>().material.color = Color.magenta;
+    }
+
     protected override void OnDisable()
     {
         base.OnDisable();
