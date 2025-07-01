@@ -45,7 +45,6 @@ public class PlayerRespawn : PlayerAbility
 
         _owner.GetAbility<PlayerAttack>().enabled = true;
         _owner.GetAbility<PlayerMovement>().enabled = true;
-        _owner.GetAbility<PlayerRotateAbility>().enabled = true;
         _owner.GetAbility<PlayerStamina>().enabled = true;
         _owner.GetAbility<AnimationPlayer>().enabled = true;
         _owner.CharacterController.enabled = true;

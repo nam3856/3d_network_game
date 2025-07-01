@@ -45,7 +45,7 @@ public class PlayerHealth : PlayerAbility, IPunObservable
 
     private void Die(int attackerNum = 0)
     {
-        OnDied.Invoke((attackerNum, _photonView.OwnerActorNr));
+        _photonView.RPC(nameof(RPC_InvokeDie), RpcTarget.All, attackerNum);
         _animationPlayer.PlayAnimation(AnimTriggerParam.Die);
         _owner.GetAbility<PlayerAttack>().enabled = false;
         _owner.GetAbility<PlayerMovement>().enabled = false;
@@ -54,6 +54,12 @@ public class PlayerHealth : PlayerAbility, IPunObservable
         _owner.GetAbility<PlayerRespawn>().enabled = true;
 
         Debug.Log("플레이어 사망");
+    }
+
+    [PunRPC]
+    private void RPC_InvokeDie(int attackerNum)
+    {
+        OnDied.Invoke((attackerNum, _photonView.OwnerActorNr));
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

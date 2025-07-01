@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using System.Collections;
+using Photon.Pun;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -25,15 +26,25 @@ public class PlayerRotateAbility : PlayerAbility
         _inputActions = new InputSystem_Actions();
     }
 
-    private void Start()
+    protected override void OnEnable()
     {
+        StartCoroutine(Initialize());
+    }
+
+    private IEnumerator Initialize()
+    {
+        while(_photonView == null)
+        {
+            yield return null;
+        }
+
         if (_photonView.IsMine)
         {
             VCamera.Follow = CameraRoot;
             _inputActions.Player.Enable();
             _inputActions.Player.Look.performed += OnLookPerformed;
             _inputActions.Player.Look.canceled += OnLookCanceled;
-            if(GameObject.FindGameObjectWithTag("MinimapCamera").TryGetComponent(out MinimapCamera minimapCamera))
+            if (GameObject.FindGameObjectWithTag("MinimapCamera").TryGetComponent(out MinimapCamera minimapCamera))
             {
                 minimapCamera.SetPlayerTransform(transform);
             }
@@ -48,7 +59,6 @@ public class PlayerRotateAbility : PlayerAbility
             _inputActions.Player.Disable();
         }
     }
-
     protected override void OnDisable()
     {
         base.OnDisable();
