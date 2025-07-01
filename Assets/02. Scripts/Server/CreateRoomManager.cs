@@ -35,6 +35,7 @@ public class CreateRoomManager
             },
             CustomRoomPropertiesForLobby = new[] { "Host", "HasPassword", "Password", "BreakIn" },
             PublishUserId = true,
+            CleanupCacheOnLeave = true
         };
 
         CreateRoom(_customRoomOptions, roomName);

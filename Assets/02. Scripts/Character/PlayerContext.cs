@@ -6,6 +6,12 @@ public class PlayerContext : MonoBehaviour
 {
     public PlayerStat PlayerStat;
     private Dictionary<Type, PlayerAbility> _abilitiesCache = new();
+    public CharacterController CharacterController;
+
+    private void Awake()
+    {
+        CharacterController = GetComponent<CharacterController>();
+    }
 
     public T GetAbility<T>() where T : PlayerAbility
     {

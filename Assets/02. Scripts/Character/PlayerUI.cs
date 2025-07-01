@@ -39,8 +39,8 @@ public class PlayerUI : PlayerAbility
         {
             StaminaBarImage.fillAmount = Mathf.Clamp01(current / max);
         }
-
-        _photonView.RPC(nameof(RPC_UpdateStaminaUI), RpcTarget.All, current, max);
+        if (_photonView != null)
+            _photonView.RPC(nameof(RPC_UpdateStaminaUI), RpcTarget.All, current, max);
     }
 
     public void UpdateHealthUI(float current, float max)
@@ -50,7 +50,8 @@ public class PlayerUI : PlayerAbility
             HealthBarImage.fillAmount = Mathf.Clamp01(current / max);
         }
 
-        _photonView.RPC(nameof(RPC_UpdateHealthUI), RpcTarget.All, current, max);
+        if(_photonView!=null)
+            _photonView.RPC(nameof(RPC_UpdateHealthUI), RpcTarget.All, current, max);
     }
 
     [PunRPC]

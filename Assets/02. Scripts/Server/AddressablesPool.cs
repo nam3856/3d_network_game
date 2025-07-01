@@ -9,8 +9,6 @@ public class AddressablesPool : IPunPrefabPool
     private readonly Dictionary<string, GameObject> _prefabCache = new();
     private readonly HashSet<string> _loadingSet = new();
 
-    
-
     public async void Preload(string address)
     {
         if (_prefabCache.ContainsKey(address) || _loadingSet.Contains(address))

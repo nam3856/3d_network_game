@@ -17,6 +17,11 @@ public class PlayerStamina : PlayerAbility
         _currentStamina = Max;
     }
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        Recover(Max);
+    }
     protected override void Update()
     {
         base.Update();

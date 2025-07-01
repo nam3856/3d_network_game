@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
 
@@ -23,32 +24,53 @@ public class AddressableLoader : MonoBehaviourPunCallbacks
         var pool = new AddressablesPool();
         PhotonNetwork.PrefabPool = pool;
 
-        pool.Preload("PlayerPrefab");
+        pool.Preload(prefabAddress);
+        
     }
     public override void OnEnable()
     {
         base.OnEnable();
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        //SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     public override void OnDisable()
     {
         base.OnDisable();
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        //SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    public override void OnJoinedRoom()
+    {
+        StartCoroutine(WaitUntilSceneLoadedThenSpawn());
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private IEnumerator WaitUntilSceneLoadedThenSpawn()
     {
-        if (scene.buildIndex == 1 && PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InRoom)
-        {
-            StartCoroutine(LoadAndSpawnPlayer());
-        }
+        while (SceneManager.GetActiveScene().buildIndex != 1)
+            yield return null;
+
+        yield return LoadAndSpawnPlayer();
     }
+    //private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    //{
+    //    StartCoroutine(LoadAndSpawnPlayer());
+    //    if (scene.buildIndex == 1 && PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InRoom)
+    //    {
+            
+    //        Debug.Log("Start Spawn");
+    //    }
+    //    else
+    //    {
+    //        if (scene.buildIndex != 1) Debug.Log(scene.buildIndex);
+    //        if (!PhotonNetwork.IsConnected) Debug.Log("PhotonNetwork not connected");
+    //        if (!PhotonNetwork.InRoom) Debug.Log("Not in room");
+    //    }
+    //}
     private IEnumerator LoadAndSpawnPlayer()
     {
         // pool이 로딩하기 전에 Photon.Instantiate를 호출하면 안 됨 → 기다려야 함
         while (!(PhotonNetwork.PrefabPool is AddressablesPool pool) || !pool.IsLoaded(prefabAddress))
         {
+            Debug.Log("Not Loaded");
             yield return null;
         }
 

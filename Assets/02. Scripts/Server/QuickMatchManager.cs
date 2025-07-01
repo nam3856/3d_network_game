@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using Photon.Realtime;
 using System;
 using System.Collections;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 // 스크립트
 public class QuickMatchManager : MonoBehaviourPunCallbacks
 {
@@ -31,9 +32,9 @@ public class QuickMatchManager : MonoBehaviourPunCallbacks
         {
             MaxPlayers = 4,
             IsOpen = true,
-            IsVisible = true
+            IsVisible = true,
+            CleanupCacheOnLeave = true
         };
-
         PhotonNetwork.JoinRandomOrCreateRoom(
             expectedCustomRoomProperties: null,
             expectedMaxPlayers: 4,
@@ -60,7 +61,8 @@ public class QuickMatchManager : MonoBehaviourPunCallbacks
         {
             MaxPlayers = 4,
             IsOpen = true,
-            IsVisible = true
+            IsVisible = true,
+            CleanupCacheOnLeave = true
         };
 
         PhotonNetwork.JoinRandomOrCreateRoom(
@@ -74,6 +76,7 @@ public class QuickMatchManager : MonoBehaviourPunCallbacks
         );
     }
 
+    
     public override void OnJoinedRoom()
     {
         if (PhotonNetwork.CurrentLobby.Name == "CustomLobby") return;
@@ -98,6 +101,10 @@ public class QuickMatchManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
         {
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable 
+            {
+                { "CurrentScene", 1 }
+            });
             StartCoroutine(StartGameCountdown());
         }
     }

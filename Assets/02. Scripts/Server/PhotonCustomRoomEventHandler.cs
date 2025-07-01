@@ -50,12 +50,50 @@ public class PhotonCustomRoomEventHandler : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        ChatPrefab?.SetActive(true);
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("CurrentScene", out object sceneObj))
+        {
+            int sceneIndex = (int)sceneObj;
+
+            if (sceneIndex == 1)
+            {
+                ServerEvent?.Invoke("난입 성공! 건투를 빕니다.");
+            }
+        }
+        else
+        {
+            ChatPrefab.SetActive(true);
+        }
     }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("CurrentScene", out object sceneObj))
+        {
+            int sceneIndex = (int)sceneObj;
+
+            if (sceneIndex == 1)
+            {
+                ServerEvent?.Invoke($"{newPlayer.NickName} 님이 게임에 난입했습니다!");
+            }
+        }
+    }
+    public override void OnPlayerLeftRoom(Player newPlayer)
+    {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("CurrentScene", out object sceneObj))
+        {
+            int sceneIndex = (int)sceneObj;
+
+            if (sceneIndex == 1)
+            {
+                ServerEvent?.Invoke($"{newPlayer.NickName} 님이 탈주했습니다..");
+            }
+        }
+    }
+
 
     public override void OnLeftRoom()
     {
-        ChatPrefab?.SetActive(false);
+        ChatPrefab.SetActive(false);
     }
 
     public override void OnDisconnected(DisconnectCause cause)

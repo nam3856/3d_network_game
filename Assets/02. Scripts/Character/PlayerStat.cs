@@ -27,6 +27,7 @@ public class PlayerStat
     [Header("Health")]
     public float MaxHealth = 100f;
     public float HealthRecoverPerSecond = 3f;
+    public float RespawnTime = 5f;
 
 
     [Header("Camera")]

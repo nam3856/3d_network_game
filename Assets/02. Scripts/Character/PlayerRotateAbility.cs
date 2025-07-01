@@ -8,7 +8,6 @@ public class PlayerRotateAbility : PlayerAbility
     [Header("References")]
     public Transform CameraRoot;
     public CinemachineCamera VCamera;
-    public Camera MinimapCamera;
     [Header("Rotation Settings")]
     public float MouseRotationSpeed = 100f;
     public float GamepadRotationSpeed = 500f;
@@ -26,21 +25,26 @@ public class PlayerRotateAbility : PlayerAbility
         _inputActions = new InputSystem_Actions();
     }
 
-    protected override void OnEnable()
+    private void Start()
     {
-        base.OnEnable();
-        
         if (_photonView.IsMine)
         {
             VCamera.Follow = CameraRoot;
             _inputActions.Player.Enable();
             _inputActions.Player.Look.performed += OnLookPerformed;
             _inputActions.Player.Look.canceled += OnLookCanceled;
+            if(GameObject.FindGameObjectWithTag("MinimapCamera").TryGetComponent(out MinimapCamera minimapCamera))
+            {
+                minimapCamera.SetPlayerTransform(transform);
+            }
+            else
+            {
+                Debug.LogError("MinimapCamera를 찾을 수 없어용..");
+            }
         }
         else
         {
             VCamera.gameObject.SetActive(false);
-            MinimapCamera.gameObject.SetActive(false);
             _inputActions.Player.Disable();
         }
     }
@@ -95,7 +99,8 @@ public class PlayerRotateAbility : PlayerAbility
         float rotationAmountX = _mouseX * _currentRotationSpeed * Time.deltaTime;
         float rotationAmountY = _mouseY * _currentRotationSpeed * Time.deltaTime;
 
-        transform.Rotate(Vector3.up, rotationAmountX);
+        if(!_owner.GetAbility<PlayerHealth>().IsDead)
+            transform.Rotate(Vector3.up, rotationAmountX);
 
         _currentCameraRotationX -= rotationAmountY;
         _currentCameraRotationX = Mathf.Clamp(_currentCameraRotationX, -90f, 90f);

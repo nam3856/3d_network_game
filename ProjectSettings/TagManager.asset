@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - FollowCamera
+  - MinimapCamera
   layers:
   - Default
   - TransparentFX

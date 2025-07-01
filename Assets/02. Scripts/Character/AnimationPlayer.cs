@@ -7,7 +7,8 @@ public enum AnimTriggerParam {
     Attack2 = 2, 
     Attack3 = 3, 
     Hit = 4,
-    Die = 5
+    Die = 5,
+    Respawn = 6
 }
 
 public enum AnimBoolParam { IsGrounded }
@@ -20,6 +21,12 @@ public class AnimationPlayer : PlayerAbility
     {
         base.Awake();
         _animator = GetComponent<Animator>();
+    }
+    protected override void OnEnable()
+    {
+        if (!_photonView.IsMine) return;
+        AnimTriggerParam type = AnimTriggerParam.Respawn;
+        _photonView.RPC(nameof(RPC_PlayAnimation), RpcTarget.All, type);
     }
 
     public void PlayAnimation(AnimTriggerParam type)
@@ -77,6 +84,9 @@ public class AnimationPlayer : PlayerAbility
                 break;
             case AnimTriggerParam.Die:
                 _animator.SetTrigger("Die");
+                break;
+            case AnimTriggerParam.Respawn:
+                _animator.SetTrigger("Respawn");
                 break;
             default:
                 Debug.LogError("No!!!!!!!!!!!!!!!!!!!!");

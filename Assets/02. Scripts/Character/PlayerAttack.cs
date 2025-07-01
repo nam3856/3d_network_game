@@ -76,7 +76,7 @@ public class PlayerAttack : PlayerAbility
         {
             if (hit.gameObject != gameObject && hit.TryGetComponent(out PlayerHealth health))
             {
-                health.TakeDamage(_owner.PlayerStat.AttackDamage);
+                health.TakeDamage(_owner.PlayerStat.AttackDamage, _photonView.OwnerActorNr);
             }
         }
     }

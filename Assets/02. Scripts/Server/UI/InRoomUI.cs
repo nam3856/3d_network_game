@@ -6,6 +6,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using TMPro;
+
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class InRoomUI : MonoBehaviourPunCallbacks
 {
     public static event Action<string> OnRoomMessage;
@@ -66,6 +68,10 @@ public class InRoomUI : MonoBehaviourPunCallbacks
             PhotonNetwork.CurrentRoom.IsOpen = false;
         }
         _startGameButton.interactable = false;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable
+            {
+                { "CurrentScene", 1 }
+            });
         StartCoroutine(StartGameCountdown());
     }
 
