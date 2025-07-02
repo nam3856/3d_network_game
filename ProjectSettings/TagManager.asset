@@ -6,6 +6,8 @@ TagManager:
   tags:
   - FollowCamera
   - MinimapCamera
+  - Missile
+  - Target
   layers:
   - Default
   - TransparentFX
@@ -15,7 +17,7 @@ TagManager:
   - UI
   - Enviornment
   - Minimap
-  - 
+  - Monster
   - 
   - 
   - 

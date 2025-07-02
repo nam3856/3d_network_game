@@ -21,7 +21,12 @@ public class PlayerMovement : PlayerAbility
     private Vector3 _velocity;
     private bool _isSprinting;
     private bool _isGrounded;
+    private bool _isBuffed;
+    private float _buffTime;
+
     public bool IsGrounded => _isGrounded;
+
+    
 
     protected override void Awake()
     {
@@ -35,12 +40,11 @@ public class PlayerMovement : PlayerAbility
         base.OnEnable();
         if (_photonView.IsMine)
         {
+            _buffTime = 0;
             _inputActions.Player.Enable();
             _moveInput = Vector2.zero;
             _inputActions.Player.Move.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
             _inputActions.Player.Move.canceled += ctx => _moveInput = Vector2.zero;
-
-
             _inputActions.Player.Jump.performed += ctx => Jump();
             _inputActions.Player.Sprint.performed += ctx => _isSprinting = true;
             _inputActions.Player.Sprint.canceled += ctx => _isSprinting = false;
@@ -67,7 +71,22 @@ public class PlayerMovement : PlayerAbility
             MovePlayer();
             ApplyGravity();
             UpdateAnimator();
+
+            if (_buffTime > 0)
+            {
+                _buffTime -= Time.deltaTime;
+                _isBuffed = true;
+            }
+            else
+            {
+                _isBuffed = false;
+            }
         }
+    }
+
+    public void SetBuffTime()
+    {
+        _buffTime = _owner.PlayerStat.MoveBuffTime;
     }
 
     private void MovePlayer()
@@ -84,19 +103,24 @@ public class PlayerMovement : PlayerAbility
     }
     private float GetCurrentSpeed()
     {
+        float speed = WalkSpeed;
         if (_isSprinting)
         {
             var stamina = _owner.GetAbility<PlayerStamina>();
             if (stamina != null && stamina.TryConsume(_owner.PlayerStat.RunStaminaPerSecond * Time.deltaTime))
             {
-                return SprintSpeed;
+                speed = SprintSpeed;
             }
             else
             {
                 _isSprinting = false;
             }
         }
-        return WalkSpeed;
+        if (_isBuffed)
+        {
+            speed *= _owner.PlayerStat.MoveMultipler;
+        }
+        return speed;
     }
     private void ApplyGravity()
     {

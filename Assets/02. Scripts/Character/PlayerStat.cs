@@ -10,11 +10,16 @@ public class PlayerStat
     public float Gravity = -9.81f;
     public float WalkSpeed => MoveSpeed;
     public float SprintSpeed => MoveSpeed * 1.5f;
+    public float MoveMultipler = 1.5f;
+    public float MoveBuffTime = 5f;
 
     [Header("Combat")]
     public float AttackRange = 2f;
-    public int AttackDamage = 10;
+    public float AttackMinDamage = 10;
+    public float AttackMaxDamage = 15;
     public float AttackCooldown = 0.6f;
+    public float AttackBuffTime = 5f;
+    public float AttackBuffStat = 1.5f;
 
     [Header("Stemina")]
     public float MaxStamina = 100f;

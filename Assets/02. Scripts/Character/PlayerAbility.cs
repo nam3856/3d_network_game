@@ -5,7 +5,7 @@ public abstract class PlayerAbility:MonoBehaviour
 {
     protected PlayerContext _owner { get; private set; }
     protected PhotonView _photonView { get; private set; }
-
+    
 
     protected virtual void Awake()
     {

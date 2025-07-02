@@ -1,6 +1,5 @@
 using UnityEngine;
 using Photon.Pun;
-using Photon.Pun.Demo.PunBasics;
 
 public class PlayerRespawn : PlayerAbility
 {
@@ -38,7 +37,6 @@ public class PlayerRespawn : PlayerAbility
     [PunRPC]
     private void RPC_Respawn()
     {
-        _owner.CharacterController.enabled = false;
         gameObject.SetActive(false);
         gameObject.transform.position = new Vector3(Random.Range(-38f, 28f), 10f, Random.Range(-38f, 38f));
         gameObject.SetActive(true);
@@ -48,6 +46,12 @@ public class PlayerRespawn : PlayerAbility
         _owner.GetAbility<PlayerStamina>().enabled = true;
         _owner.GetAbility<AnimationPlayer>().enabled = true;
         _owner.CharacterController.enabled = true;
+
+        var col = GetComponentsInChildren<Collider>();
+        foreach (Collider c in col)
+        {
+            c.enabled = true;
+        }
         enabled = false;
     }
 }

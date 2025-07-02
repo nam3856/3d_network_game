@@ -1,16 +1,30 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using Photon.Pun;
 
-public class PlayerContext : MonoBehaviour
+public class PlayerContext : MonoBehaviourPun
 {
     public PlayerStat PlayerStat;
     private Dictionary<Type, PlayerAbility> _abilitiesCache = new();
     public CharacterController CharacterController;
+    public PhotonView View => photonView;
+    public int Score { get; set; }
+    public static event Action<int> OnScoreAdded;
 
     private void Awake()
     {
         CharacterController = GetComponent<CharacterController>();
+    }
+
+    [PunRPC]
+    public void RPC_AddScore(int amount)
+    {
+        Score += amount;
+        if (photonView.IsMine)
+        {
+            OnScoreAdded?.Invoke(amount);
+        }
     }
 
     public T GetAbility<T>() where T : PlayerAbility

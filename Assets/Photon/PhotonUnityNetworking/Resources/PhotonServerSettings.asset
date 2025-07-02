@@ -53,6 +53,15 @@ MonoBehaviour:
   - ForceBadStats
   - ReportMyStats
   - RPC_InvokeDie
+  - RPC_CreateItems
+  - RPC_Delete
+  - Die
+  - RPC_AddScore
+  - RPC_Die
+  - RPC_ChangeState
+  - RPC_SetTrigger
+  - RPC_SetAniBool
+  - RPC_SetAniTrigger
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

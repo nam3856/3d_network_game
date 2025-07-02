@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NUnit.Framework.Interfaces;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -36,12 +37,16 @@ public class AddressablesPool : IPunPrefabPool
         Debug.Log($"[AddressablesPool] Instantiate 요청됨: {prefabId}");
         if (_prefabCache.TryGetValue(prefabId, out var prefab))
         {
-            return Object.Instantiate(prefab, position, rotation);
+            var go = Object.Instantiate(prefab, position, rotation);
+
+            return go;
         }
 
         Debug.LogError($"[AddressablesPool] '{prefabId}' 프리팹이 사전 로드되지 않음");
         return null;
     }
+
+
 
     public void Destroy(GameObject gameObject)
     {

@@ -1,6 +1,7 @@
 using System;
 using Photon.Pun;
 using UnityEngine;
+using Random = UnityEngine.Random;
 public class PlayerHealth : PlayerAbility, IPunObservable
 {
     private float _currentHealth;
@@ -39,12 +40,51 @@ public class PlayerHealth : PlayerAbility, IPunObservable
         {
             _owner.GetAbility<PlayerShakingAbility>().Shake();
             _animationPlayer.PlayAnimation(AnimTriggerParam.Hit);
+            PhotonNetwork.Instantiate($"HitEffect_{Random.Range(1, 11)}", transform.position + new Vector3(0, 1, 0), Quaternion.identity);
         }
     }
 
-
-    private void Die(int attackerNum = 0)
+    public void Heal(float value)
     {
+        if (!_photonView.IsMine) return;
+        _currentHealth += value;
+        _currentHealth = Mathf.Min(MaxHealth, _currentHealth);
+
+        _owner.GetAbility<PlayerUI>()?.UpdateHealthUI(_currentHealth, MaxHealth);
+        HUDManager.Instance.UpdateHpUI(_currentHealth, MaxHealth);
+    }
+    private void Die(int attackerNum = -1)
+    {
+        var rand = Random.Range(0, 1f);
+        EItemType itemType;
+        if (rand<=0.2f)
+        {
+            itemType = EItemType.HealItem;
+        }
+        else if(rand<=0.5f)
+        {
+            itemType = EItemType.RecoverStaminaItem;
+        }
+        else
+        {
+            itemType = EItemType.ScoreItem;
+        }
+        _photonView.RPC(nameof(RPC_Die), RpcTarget.All, attackerNum, itemType);
+    }
+    [PunRPC]
+    private void RPC_Die(int attackerNum = -1, EItemType type = EItemType.ScoreItem)
+    {
+        if (_photonView.IsMine && attackerNum >=0)
+        {
+            MakeItems(1, type);
+        }
+        _owner.CharacterController.enabled = false;
+        var col = GetComponentsInChildren<Collider>();
+        foreach (Collider c in col)
+        {
+            c.enabled = false;
+        }
+        PhotonNetwork.Instantiate("DeathEffect", transform.position + new Vector3(0, 1, 0), Quaternion.identity);
         _photonView.RPC(nameof(RPC_InvokeDie), RpcTarget.All, attackerNum);
         _animationPlayer.PlayAnimation(AnimTriggerParam.Die);
         _owner.GetAbility<PlayerAttack>().enabled = false;
@@ -56,10 +96,16 @@ public class PlayerHealth : PlayerAbility, IPunObservable
         Debug.Log("플레이어 사망");
     }
 
+    private void MakeItems(int count, EItemType type = EItemType.ScoreItem)
+    {
+        var pos = transform.position + new Vector3(0, 0.5f, 0);
+        ItemObjectFactory.Instance.RequestCreate(type, pos, count);
+    }
+
     [PunRPC]
     private void RPC_InvokeDie(int attackerNum)
     {
-        OnDied.Invoke((attackerNum, _photonView.OwnerActorNr));
+        OnDied?.Invoke((attackerNum, _photonView.OwnerActorNr));
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
