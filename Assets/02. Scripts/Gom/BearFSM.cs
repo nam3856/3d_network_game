@@ -64,6 +64,7 @@ public class BearFSM : MonoBehaviourPun
             { EBearState.Patrol, new BearPatrolState(this) },
             { EBearState.HitStun, new BearHitStunState(this) },
             { EBearState.Die, new BearDieState(this) },
+            {EBearState.Roar, new BearRoarState(this) }
         };
         ChaseSpeed = BaseChaseSpeed;
         PatrolSpeed = BasePatrolSpeed;

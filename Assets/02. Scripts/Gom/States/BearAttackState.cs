@@ -63,9 +63,6 @@ public class BearAttackState : IBearState
     {
         yield return new WaitForSeconds(delay);
 
-        if (!PhotonNetwork.IsMasterClient)
-            yield break;
-
         Vector3 hitPoint = _fsm.transform.position + _fsm.transform.forward * 1.5f + Vector3.up;
         float radius = 1.2f;
 

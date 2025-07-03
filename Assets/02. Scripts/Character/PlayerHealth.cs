@@ -77,6 +77,7 @@ public class PlayerHealth : PlayerAbility, IPunObservable
         if (_photonView.IsMine && attackerNum >=0)
         {
             MakeItems(1, type);
+            _photonView.RPC(nameof(RPC_InvokeDie), RpcTarget.All, attackerNum);
         }
         _owner.CharacterController.enabled = false;
         var col = GetComponentsInChildren<Collider>();
@@ -85,7 +86,7 @@ public class PlayerHealth : PlayerAbility, IPunObservable
             c.enabled = false;
         }
         PhotonNetwork.Instantiate("DeathEffect", transform.position + new Vector3(0, 1, 0), Quaternion.identity);
-        _photonView.RPC(nameof(RPC_InvokeDie), RpcTarget.All, attackerNum);
+        
         _animationPlayer.PlayAnimation(AnimTriggerParam.Die);
         _owner.GetAbility<PlayerAttack>().enabled = false;
         _owner.GetAbility<PlayerMovement>().enabled = false;
