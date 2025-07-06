@@ -8,6 +8,8 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _hpText;
     [SerializeField] private TextMeshProUGUI _staminaText;
     [SerializeField] private TextMeshProUGUI _nickNameText;
+    [SerializeField] private Image _profileImage;
+    public Sprite[] ProfileSprite;
     public static HUDManager Instance;
 
 
@@ -32,8 +34,17 @@ public class HUDManager : MonoBehaviour
     {
         _hpBarImage.fillAmount = 1;
         _staminaBarImage.fillAmount = 1;
-        _hpText.text = "100/100";
-        _staminaText.text = "100/100";
+        _hpText.text = "100.00/100.00";
+        _staminaText.text = "100.00/100.00";
+        string selectedChar = PlayerPrefs.GetString("SelectedCharacterType", CharacterType.M.ToString());
+        if(selectedChar == CharacterType.M.ToString())
+        {
+            _profileImage.sprite = ProfileSprite[(int)CharacterType.M];
+        }
+        else
+        {
+            _profileImage.sprite = ProfileSprite[(int)CharacterType.F];
+        }
     }
 
     public void UpdateHpUI(float current, float max)

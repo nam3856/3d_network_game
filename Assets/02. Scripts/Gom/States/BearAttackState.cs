@@ -10,6 +10,8 @@ public class BearAttackState : IBearState
     private int _attackIndex;
     private Coroutine _attackRoutine;
 
+    private Transform _target;
+
     private readonly float[] _attackHitDelays = new float[]
     {
         0.21f, // Attack1
@@ -33,6 +35,11 @@ public class BearAttackState : IBearState
         _attackStartTime = Time.time;
 
         _attackRoutine = _fsm.StartCoroutine(DelayedHit(_attackHitDelays[_attackIndex]));
+        _target = _fsm.GetClosestAlivePlayer();
+        var dir = _target.position - _fsm.transform.position;
+        dir.y = 0;
+        dir = dir.normalized;
+        _fsm.transform.rotation = Quaternion.LookRotation(dir);
     }
 
     public void Exit()

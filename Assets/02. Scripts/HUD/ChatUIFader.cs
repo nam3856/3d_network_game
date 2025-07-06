@@ -24,6 +24,12 @@ public class ChatUIFader : MonoBehaviour
         autoHideCoroutine = StartCoroutine(AutoHide());
     }
 
+    public void FadeInAndDontFadeOut()
+    {
+        StopAllCoroutines();
+        _canvasGroup.alpha = 1;
+    }
+
     private IEnumerator AutoHide()
     {
         yield return new WaitForSeconds(visibleDuration);

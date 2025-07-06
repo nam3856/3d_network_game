@@ -12,6 +12,7 @@ public class PlayerAttack : PlayerAbility
 
     private float _buffTime = 0;
     private bool _isBuffed = false;
+    private bool _isChatInputActive = false;
 
     protected override void Awake()
     {
@@ -25,6 +26,7 @@ public class PlayerAttack : PlayerAbility
         {
             _inputActions.Player.Enable();
             _inputActions.Player.Attack.performed += TryAttack;
+            ChatManager.OnChatInputActiveChanged += OnChatInputActiveChanged;
         }
         else
         {
@@ -82,6 +84,7 @@ public class PlayerAttack : PlayerAbility
         {
             _inputActions.Player.Attack.performed -= TryAttack;
             _inputActions.Player.Disable();
+            ChatManager.OnChatInputActiveChanged -= OnChatInputActiveChanged;
         }
     }
 
@@ -91,6 +94,8 @@ public class PlayerAttack : PlayerAbility
     }
     private void TryAttack(InputAction.CallbackContext context)
     {
+        // 채팅 입력 필드가 활성화되어 있으면
+        if (_isChatInputActive) return;
         // 내꺼가 아니면 안돼
         if (!_photonView.IsMine) return;
 
@@ -143,5 +148,16 @@ public class PlayerAttack : PlayerAbility
             }
         }
     }
-
+    private void OnChatInputActiveChanged(bool isActive)
+    {
+        _isChatInputActive = isActive;
+        if (isActive)
+        {
+            _inputActions.Player.Disable();
+        }
+        else
+        {
+            _inputActions.Player.Enable();
+        }
+    }
 }

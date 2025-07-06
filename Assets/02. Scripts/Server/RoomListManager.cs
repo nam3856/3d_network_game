@@ -29,6 +29,8 @@ public class RoomListManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject _passwordPopup;
     [SerializeField] private TMP_InputField _passwordInput;
     [SerializeField] private GameObject _passwordWrongPopup;
+    [SerializeField] private Button _backToMainButton;
+    [SerializeField] private GameObject _mainMenu;
 
     private string _pendingRoomName;
     private string _expectedPassword;
@@ -39,13 +41,13 @@ public class RoomListManager : MonoBehaviourPunCallbacks
     private Coroutine _autoRefreshCoroutine;
     private readonly WaitForSeconds _refreshInterval = new WaitForSeconds(30f);
     private bool _isRefreshing = false;
-
     private void Awake()
     {
         _refreshButton.onClick.AddListener(OnClickRefreshRoomList);
         _joinRoomButton.onClick.AddListener(OnClickJoinRoom);
         _joinRandomButton.onClick.AddListener(OnClickJoinRandom);
         _createRoomButton.onClick.AddListener(OnClickCreateRoom);
+        _backToMainButton.onClick.AddListener(BackToMain);
     }
     private void OnClickRefreshRoomList()
     {
@@ -57,13 +59,18 @@ public class RoomListManager : MonoBehaviourPunCallbacks
             if (_refreshButton != null) _refreshButton.interactable = false;
         }
     }
-
+    private void BackToMain()
+    {
+        PhotonNetwork.Disconnect();
+        _backToMainButton.gameObject.SetActive(false);
+    }
     private void OnClickCreateRoom()
     {
         _selectedRoomInfo = null;
         _customRoomCanvas.alpha = 0f;
         _customRoomCanvas.interactable = false;
         _customRoomCanvas.blocksRaycasts = false;
+        _backToMainButton.gameObject.SetActive(false);
     }
 
     public override void OnEnable()
@@ -269,6 +276,23 @@ public class RoomListManager : MonoBehaviourPunCallbacks
         _customRoomCanvas.alpha = 0f;
         _customRoomCanvas.interactable = false;
         _customRoomCanvas.blocksRaycasts = false;
+
+        _backToMainButton.gameObject.SetActive(false);
+    }
+
+    public override void OnLeftRoom()
+    {
+        _selectedRoomInfo = null;
+        _customRoomCanvas.alpha = 1f;
+        _customRoomCanvas.interactable = true;
+        _customRoomCanvas.blocksRaycasts = true;
+        cachedRoomList.Clear();
+
+        if (_autoRefreshCoroutine != null)
+            StopCoroutine(_autoRefreshCoroutine);
+        _autoRefreshCoroutine = StartCoroutine(AutoRefreshRoomList());
+
+        _backToMainButton.gameObject.SetActive(true);
     }
 
 
@@ -276,13 +300,20 @@ public class RoomListManager : MonoBehaviourPunCallbacks
     {
         cachedRoomList.Clear();
 
+        _selectedRoomInfo = null;
+        _customRoomCanvas.alpha = 0f;
+        _customRoomCanvas.interactable = false;
+        _customRoomCanvas.blocksRaycasts = false;
         if (_autoRefreshCoroutine != null)
         {
             StopCoroutine(_autoRefreshCoroutine);
             _autoRefreshCoroutine = null;
         }
 
+        
         SetButtonsInteractable(true);
+        gameObject.SetActive(false);
+        _mainMenu.SetActive(true);
     }
 
     public override void OnDisconnected(DisconnectCause cause)

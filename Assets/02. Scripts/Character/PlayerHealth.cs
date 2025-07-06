@@ -24,6 +24,12 @@ public class PlayerHealth : PlayerAbility, IPunObservable
         if(_photonView!=null && _photonView.IsMine)
             HUDManager.Instance.UpdateHpUI(_currentHealth, MaxHealth);
     }
+
+    protected override void Update()
+    {
+        if (!_photonView.IsMine) return;
+        Heal(_owner.PlayerStat.HealthRecoverPerSecond * Time.deltaTime);
+    }
     public void TakeDamage(float damage, int attackerNum)
     {
         if (!_photonView.IsMine) return;
@@ -74,16 +80,20 @@ public class PlayerHealth : PlayerAbility, IPunObservable
     [PunRPC]
     private void RPC_Die(int attackerNum = -1, EItemType type = EItemType.ScoreItem)
     {
-        if (_photonView.IsMine && attackerNum >=0)
-        {
-            MakeItems(1, type);
-            _photonView.RPC(nameof(RPC_InvokeDie), RpcTarget.All, attackerNum);
-        }
+        
         _owner.CharacterController.enabled = false;
         var col = GetComponentsInChildren<Collider>();
         foreach (Collider c in col)
         {
             c.enabled = false;
+        }
+        if (_photonView.IsMine && attackerNum >= 0)
+        {
+            MakeItems(1, type);
+            Vector3 myPos = transform.position;
+            ScoreManager.Instance.StealHalfScore(attackerNum, _photonView.OwnerActorNr, myPos);
+           
+            _photonView.RPC(nameof(RPC_InvokeDie), RpcTarget.All, attackerNum);
         }
         PhotonNetwork.Instantiate("DeathEffect", transform.position + new Vector3(0, 1, 0), Quaternion.identity);
         

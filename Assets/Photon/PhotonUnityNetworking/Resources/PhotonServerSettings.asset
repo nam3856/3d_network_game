@@ -62,6 +62,11 @@ MonoBehaviour:
   - RPC_SetTrigger
   - RPC_SetAniBool
   - RPC_SetAniTrigger
+  - RPC_AddKill
+  - RPC_ResetScore
+  - RPC_AddScoreToActor
+  - ResetScore
+  - RPC_AddKillToActor
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

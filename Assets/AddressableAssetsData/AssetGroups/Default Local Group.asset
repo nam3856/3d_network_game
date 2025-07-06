@@ -40,6 +40,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c06c2d5b319af14b807a73a30a3c862
+    m_Address: PlayerPrefab_M
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 356e308bc626efc408756dc296e762dd
     m_Address: Item_HealItem
     m_ReadOnly: 0
@@ -71,7 +76,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 75875eb9d7b9d614d95cc9ed3b412b71
-    m_Address: PlayerPrefab
+    m_Address: PlayerPrefab_F
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

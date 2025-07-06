@@ -2,7 +2,6 @@
 using System.Collections;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
 using Random = UnityEngine.Random;
@@ -10,10 +9,11 @@ using Random = UnityEngine.Random;
 public class AddressableLoader : MonoBehaviourPunCallbacks
 {
     public static AddressableLoader Instance { get; private set; }
-    private string[] prefabAddress = { "PlayerPrefab", "DeathEffect", "Bear" };
+    private string[] prefabAddress = { "DeathEffect", "Bear" };
     private string HitEffectAddress = "HitEffect";
     private string _pickupEffectAddress = "PickupEffect";
     private string ItemAddress = "Item";
+    private string CharacterAddress = "PlayerPrefab";
 
     private void Awake()
     {
@@ -47,7 +47,10 @@ public class AddressableLoader : MonoBehaviourPunCallbacks
         {
             pool.Preload( $"{ItemAddress}_{itemType}" );
         }
-
+        foreach (var characterType in Enum.GetNames(typeof(CharacterType)))
+        {
+            pool.Preload($"{CharacterAddress}_{characterType}");
+        }
 
     }
     public override void OnEnable()
@@ -91,15 +94,22 @@ public class AddressableLoader : MonoBehaviourPunCallbacks
     private IEnumerator LoadAndSpawnPlayer()
     {
         // pool이 로딩하기 전에 Photon.Instantiate를 호출하면 안 됨 → 기다려야 함
-        while (!(PhotonNetwork.PrefabPool is AddressablesPool pool) || !pool.IsLoaded(prefabAddress[0]))
+        while (!(PhotonNetwork.PrefabPool is AddressablesPool pool)
+        || !pool.IsLoaded("PlayerPrefab_M")
+        || !pool.IsLoaded("PlayerPrefab_F"))
         {
-            Debug.Log("Not Loaded");
             yield return null;
         }
 
         Debug.Log("Addressables: Player prefab preloaded, now instantiating.");
 
-        PhotonNetwork.Instantiate(prefabAddress[0], GetSpawnPos(), Quaternion.identity);
+
+        string selectedChar = PlayerPrefs.GetString("SelectedCharacterType", CharacterType.M.ToString());
+        string prefabName = $"PlayerPrefab_{selectedChar}";
+
+        GameObject player = PhotonNetwork.Instantiate(prefabName, GetSpawnPos(), Quaternion.identity);
+
+        Debug.Log($"Spawned player with prefab: {prefabName}");
     }
 
     private Vector3 GetSpawnPos()

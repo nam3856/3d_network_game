@@ -15,12 +15,43 @@ public class ItemObject : MonoBehaviourPun
 {
     [SerializeField]private EItemType _type;
     private string _pickupEffect;
+    private Rigidbody _rb;
 
     private void Awake()
     {
+        _rb = GetComponent<Rigidbody>();
         _pickupEffect = $"PickupEffect_{_type}";
     }
+    private void Start()
+    {
+        _rb.constraints = RigidbodyConstraints.FreezeRotation;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            // 마스터만 초기 속도 부여
+            Vector3 launchDir = Vector3.up * 4f;
+            Launch(launchDir);
+        }
+    }
 
+    private void Update()
+    {
+        if(transform.position.y < -5f)
+        {
+            Vector3 randomPosition = transform.position + Random.insideUnitSphere * 25f;
+            randomPosition.y = 5f;
+            transform.position = randomPosition;
+        }
+    }
+    public void Launch(Vector3 baseForce)
+    {
+        if (_rb != null)
+        {
+            Vector3 randomDir = Random.insideUnitSphere;
+            randomDir.y = Mathf.Abs(randomDir.y);
+            Vector3 force = baseForce + randomDir * Random.Range(3f, 7f);
+            _rb.AddForce(force, ForceMode.Impulse);
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         int scoreAmount = 0;
@@ -52,10 +83,11 @@ public class ItemObject : MonoBehaviourPun
 
             if (PhotonNetwork.IsMasterClient)
             {
-                scoreAmount += Random.Range(100, 201);
 
-                player.View.RPC(nameof(PlayerContext.RPC_AddScore), player.View.Owner, scoreAmount);
-
+                if (scoreAmount > 0)
+                {
+                    ScoreManager.Instance.photonView.RPC(nameof(ScoreManager.Instance.RPC_AddScore), player.View.Owner, scoreAmount);
+                }
                 PhotonNetwork.Instantiate(_pickupEffect, transform.position, Quaternion.identity);
                 ItemObjectFactory.Instance.RequestDelete(photonView.ViewID);
             }

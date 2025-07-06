@@ -20,6 +20,8 @@ public class PlayerRotateAbility : PlayerAbility
 
     private float _currentRotationSpeed;
 
+    private bool _isChatInputActive = false;
+
     protected override void Awake()
     {
         base.Awake();
@@ -44,6 +46,7 @@ public class PlayerRotateAbility : PlayerAbility
             _inputActions.Player.Enable();
             _inputActions.Player.Look.performed += OnLookPerformed;
             _inputActions.Player.Look.canceled += OnLookCanceled;
+            ChatManager.OnChatInputActiveChanged += OnChatInputActiveChanged;
             if (GameObject.FindGameObjectWithTag("MinimapCamera").TryGetComponent(out MinimapCamera minimapCamera))
             {
                 minimapCamera.SetPlayerTransform(transform);
@@ -66,6 +69,7 @@ public class PlayerRotateAbility : PlayerAbility
         {
             _inputActions.Player.Look.performed -= OnLookPerformed;
             _inputActions.Player.Disable();
+            ChatManager.OnChatInputActiveChanged -= OnChatInputActiveChanged;
         }
     }
 
@@ -116,5 +120,18 @@ public class PlayerRotateAbility : PlayerAbility
         _currentCameraRotationX = Mathf.Clamp(_currentCameraRotationX, -90f, 90f);
 
         CameraRoot.localEulerAngles = new Vector3(_currentCameraRotationX, 0f, 0f);
+    }
+
+    private void OnChatInputActiveChanged(bool isActive)
+    {
+        _isChatInputActive = isActive;
+        if (isActive)
+        {
+            _inputActions.Player.Disable(); // Disable player input when chat is active
+        }
+        else
+        {
+            _inputActions.Player.Enable(); // Re-enable player input when chat is not active
+        }
     }
 }

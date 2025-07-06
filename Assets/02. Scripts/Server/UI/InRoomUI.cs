@@ -17,12 +17,15 @@ public class InRoomUI : MonoBehaviourPunCallbacks
     [SerializeField] private Transform _playerContainer;
     [SerializeField] private CanvasGroup _roomCanvasGroup;
     [SerializeField] private TextMeshProUGUI _roomText;
+    [SerializeField] private GameObject _characterSelectUI;
+    [SerializeField] private Button _leaveRoomButton;
     private Dictionary<string, GameObject> _players = new Dictionary<string, GameObject>();
 
 
     private void Awake()
     {
         _startGameButton.onClick.AddListener(TryStartGame);
+        _leaveRoomButton.onClick.AddListener(LeaveRoom);
     }
     // 룸에 입장한 후 호출되는 콜백 함수
     public override void OnJoinedRoom()
@@ -45,7 +48,7 @@ public class InRoomUI : MonoBehaviourPunCallbacks
             playerSet.SetNickname(player.Value);
         }
 
-
+        _characterSelectUI.SetActive(true);
         UpdateStartGameButton();
     }
 
@@ -145,6 +148,11 @@ public class InRoomUI : MonoBehaviourPunCallbacks
 
     }
 
+    private void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+
+    }
     public override void OnLeftRoom()
     {
         _roomCanvasGroup.alpha = 0;
@@ -155,5 +163,7 @@ public class InRoomUI : MonoBehaviourPunCallbacks
             Destroy(player);
         }
         _players.Clear();
+
+        _characterSelectUI.SetActive(false);
     }
 }

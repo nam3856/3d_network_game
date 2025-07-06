@@ -12,7 +12,7 @@ public class ServerMessageUI : MonoBehaviour
     {
         PhotonCustomRoomEventHandler.ServerEvent += OnServerEvent;
         PlayerHealth.OnDied += HandlePlayerDied;
-        PlayerContext.OnScoreAdded += HandleScoreUpdated;
+        ScoreManager.OnScoreAdded += HandleScoreUpdated;
         InRoomUI.OnRoomMessage += OnServerEvent;
     }
     private void OnDisable()
@@ -21,7 +21,7 @@ public class ServerMessageUI : MonoBehaviour
         InRoomUI.OnRoomMessage -= OnServerEvent;
         PlayerHealth.OnDied -= HandlePlayerDied;
 
-        PlayerContext.OnScoreAdded -= HandleScoreUpdated;
+        ScoreManager.OnScoreAdded -= HandleScoreUpdated;
     }
 
     private void HandleScoreUpdated(int score)

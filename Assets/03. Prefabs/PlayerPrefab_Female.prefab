@@ -1233,7 +1233,7 @@ GameObject:
   - component: {fileID: 4962036341910857955}
   - component: {fileID: 327025001346078361}
   m_Layer: 3
-  m_Name: PlayerPrefab
+  m_Name: PlayerPrefab_Female
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1359,10 +1359,10 @@ MonoBehaviour:
     MoveMultipler: 1.5
     MoveBuffTime: 5
     AttackRange: 2
-    AttackMinDamage: 10
-    AttackMaxDamage: 15
+    AttackMinDamage: 8
+    AttackMaxDamage: 13
     AttackCooldown: 0.6
-    AttackBuffTime: 5
+    AttackBuffTime: 10
     AttackBuffStat: 1.5
     MaxStamina: 100
     RunStaminaPerSecond: 10
@@ -1491,6 +1491,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: -8188901571083944576}
   - {fileID: 327025001346078361}
+  - {fileID: 8357500331862325538}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -3504,6 +3505,8 @@ GameObject:
   - component: {fileID: 9012282987723239957}
   - component: {fileID: 3623552593067252641}
   - component: {fileID: 7150144842413368881}
+  - component: {fileID: 8357500331862325538}
+  - component: {fileID: 3505700781011640897}
   m_Layer: 0
   m_Name: OHS06
   m_TagString: Untagged
@@ -3579,6 +3582,34 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8357500331862325538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7525825435817503163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 0
+  m_SynchronizeRotation: 0
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
+--- !u!114 &3505700781011640897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7525825435817503163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecec1b238e438614b8d52affc7eacc79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7605720695018523040
 GameObject:
   m_ObjectHideFlags: 0

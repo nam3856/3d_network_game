@@ -9,10 +9,17 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class QuickMatchManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private CanvasGroup _quickMatchCanvas;
-
+    [SerializeField] private Button _backToMainButton;
+    [SerializeField] private GameObject _mainMenu;
     public static event Action<string> QuickMatchCallback;
+    public static event Action OnLeaveLobby;
     private TypedLobby _lobbyQuickMatching = new TypedLobby("QuickLobby", LobbyType.Default);
     private int _tryCount;
+
+    private void Awake()
+    {
+        _backToMainButton.onClick.AddListener(BackToMain);
+    }
     public override void OnEnable()
     {
         base.OnEnable();
@@ -24,6 +31,13 @@ public class QuickMatchManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby(_lobbyQuickMatching);
     }
 
+    private void BackToMain()
+    {
+        PhotonNetwork.Disconnect();
+        OnLeaveLobby?.Invoke();
+        _mainMenu.SetActive(true);
+        gameObject.SetActive(false);
+    }
     public override void OnJoinedLobby()
     {
         Debug.Log("로비 접속 완료!");
@@ -45,6 +59,7 @@ public class QuickMatchManager : MonoBehaviourPunCallbacks
             roomOptions: roomOptions
         );
     }
+
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
@@ -119,6 +134,7 @@ public class QuickMatchManager : MonoBehaviourPunCallbacks
     {
         int countdown = 5;
 
+        _backToMainButton.gameObject.SetActive(false);
         while (countdown > 0)
         {
             // 모든 클라이언트에게 메시지 표시

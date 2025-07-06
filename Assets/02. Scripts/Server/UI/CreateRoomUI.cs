@@ -15,14 +15,29 @@ public class CreateRoomUI : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_InputField _passwordInput;
     [SerializeField] private Button _confirmButton;
     private CreateRoomManager _roomManager = new();
+
+    [SerializeField] private Button _cancelButton;
+    [SerializeField] private Button _backToMainButton;
+    [SerializeField] private CanvasGroup _roomListCanvasGroup;
     private void Awake()
     {
         _createRoomButton.onClick.AddListener(ShowCreateMenu);
         _confirmButton.onClick.AddListener(TryCreateRoom);
         _privateToggle.onValueChanged.AddListener(SetRoomPrivate);
         _breakInToggle.onValueChanged.AddListener(SetBreakIn);
+        _cancelButton.onClick.AddListener(CancelCreateRoom);
     }
+    private void CancelCreateRoom()
+    {
+        HideCreateMenu();
 
+        // 룸 리스트 다시 표시
+        _roomListCanvasGroup.alpha = 1.0f;
+        _roomListCanvasGroup.interactable = true;
+        _roomListCanvasGroup.blocksRaycasts = true;
+
+        _backToMainButton.gameObject.SetActive(true);
+    }
     private void SetRoomPrivate(bool isPrivate)
     {
         _isPrivate = isPrivate;

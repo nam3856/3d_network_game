@@ -8,11 +8,19 @@ public class QuickMatchUI : MonoBehaviour
     private void Start()
     {
         QuickMatchManager.QuickMatchCallback += HandleQuickMatchCallback;
+        QuickMatchManager.OnLeaveLobby += OnLeftLobby;
     }
 
     private void OnDestroy()
     {
+
+        QuickMatchManager.OnLeaveLobby -= OnLeftLobby;
         QuickMatchManager.QuickMatchCallback -= HandleQuickMatchCallback;
+    }
+
+    private void OnLeftLobby()
+    {
+        SearchingIndicator.SetActive(true);
     }
 
     private void HandleQuickMatchCallback(string text)

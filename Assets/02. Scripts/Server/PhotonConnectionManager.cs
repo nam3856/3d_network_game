@@ -75,4 +75,14 @@ public class PhotonConnectionManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.Disconnect();
     }
+
+    public override void OnLeftLobby()
+    {
+        Debug.Log($"로비 나감 InLobby = {PhotonNetwork.InLobby} InRoom = {PhotonNetwork.InRoom} Connected: {PhotonNetwork.IsConnected}");
+    }
+    public override void OnLeftRoom()
+    {
+        Debug.Log($"방 나감 InLobby = {PhotonNetwork.InLobby} InRoom = {PhotonNetwork.InRoom} Connected: {PhotonNetwork.IsConnected}");
+
+    }
 }

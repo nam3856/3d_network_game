@@ -24,6 +24,7 @@ public class PlayerMovement : PlayerAbility
     private bool _isBuffed;
     private float _buffTime;
 
+
     public bool IsGrounded => _isGrounded;
 
     
@@ -48,6 +49,7 @@ public class PlayerMovement : PlayerAbility
             _inputActions.Player.Jump.performed += ctx => Jump();
             _inputActions.Player.Sprint.performed += ctx => _isSprinting = true;
             _inputActions.Player.Sprint.canceled += ctx => _isSprinting = false;
+            ChatManager.OnChatInputActiveChanged += OnChatInputActiveChanged;
         }
         else
         {
@@ -59,6 +61,10 @@ public class PlayerMovement : PlayerAbility
     {
         base.OnDisable();
         _inputActions.Player.Disable();
+        if (_photonView.IsMine)
+        {
+            ChatManager.OnChatInputActiveChanged -= OnChatInputActiveChanged;
+        }
     }
 
     protected override void Update()
@@ -164,4 +170,15 @@ public class PlayerMovement : PlayerAbility
         _owner.GetAbility<AnimationPlayer>().SetBool(AnimBoolParam.IsGrounded, _isGrounded);
     }
 
+    private void OnChatInputActiveChanged(bool isActive)
+    {
+        if (isActive)
+        {
+            _inputActions.Player.Disable();
+        }
+        else
+        {
+            _inputActions.Player.Enable();
+        }
+    }
 }

@@ -33,8 +33,11 @@ public class BearDieState : IBearState
         if (PhotonNetwork.IsMasterClient)
         {
             Vector3 dropPos = _fsm.transform.position + Vector3.up * 0.5f;
-            EItemType dropItem = GetRandomDropItem();
-            ItemObjectFactory.Instance.RequestCreate(dropItem, dropPos, 1);
+            for(int i = 0; i < 5; i++)
+            {
+                EItemType dropItem = GetRandomDropItem();
+                ItemObjectFactory.Instance.RequestCreate(dropItem, dropPos, 1);
+            }
         }
 
         _fsm.StartCoroutine(DestroyAfterDelay(3f));
